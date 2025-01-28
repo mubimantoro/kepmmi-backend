@@ -9,7 +9,7 @@ class Kategori extends Model
     //
 
     protected $fillable = [
-        'name',
+        'nama',
         'slug'
     ];
 
