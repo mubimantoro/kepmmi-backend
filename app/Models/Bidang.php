@@ -8,8 +8,8 @@ class Bidang extends Model
 {
     //
     protected $fillable = [
-        'nama_bidang',
-        'tugas_bidang',
+        'nama',
+        'tugas',
     ];
 
     public function programKerjas()

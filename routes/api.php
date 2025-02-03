@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\BidangController;
+use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\KategoriController;
+use App\Http\Controllers\Api\Admin\KegiatanController;
+use App\Http\Controllers\Api\Admin\ProgramKerjaController;
 use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -21,7 +25,12 @@ Route::prefix('admin')->group(function () {
 
         Route::apiResource('/users', UserController::class);
 
-        Route::get('/categories/all', KategoriController::class, 'all');
-        Route::apiResource('/categories', KategoriController::class);
+        Route::get('/categories/all', [CategoryController::class, 'all']);
+
+        Route::apiResource('/categories', CategoryController::class);
+        Route::apiResource('/kegiatan', KegiatanController::class);
+
+        Route::apiResource('/bidang', BidangController::class);
+        Route::apiResource('/program-kerja', ProgramKerjaController::class);
     });
 });
