@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class UserTableSeeder extends Seeder
@@ -21,8 +22,11 @@ class UserTableSeeder extends Seeder
         ]);
 
         $role = Role::find(1);
+        $permissions = Permission::all();
+
+        $role->syncPermissions($permissions);
 
         $user = User::find(1);
-        $user->assignRole($role->nama_lengkap);
+        $user->assignRole($role->name);
     }
 }

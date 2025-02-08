@@ -15,6 +15,13 @@ class PermissionsTableSeeder extends Seeder
     {
         Permission::create(['name' => 'kategori', 'guard_name' => 'api']);
         Permission::create(['name' => 'bidang', 'guard_name' => 'api']);
+        Permission::create(['name' => 'program_kerja', 'guard_name' => 'api']);
         Permission::create(['name' => 'kegiatan', 'guard_name' => 'api']);
+        Permission::create(['name' => 'anggota', 'guard_name' => 'api']);
+        Permission::create(['name' => 'galeri', 'guard_name' => 'api']);
+
+        Permission::create(['name' => 'permissions', 'guard_name' => 'api']);
+        Permission::create(['name' => 'roles', 'guard_name' => 'api']);
+        Permission::create(['name' => 'users', 'guard_name' => 'api']);
     }
 }

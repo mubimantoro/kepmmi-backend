@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Anggota;
+use App\Models\Bidang;
+use App\Models\Kategori;
 use App\Models\Kegiatan;
+use App\Models\ProgramKerja;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -14,14 +17,20 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $anggota = Anggota::count();
+        $kategori = Kategori::count();
         $kegiatan = Kegiatan::count();
+        $anggota = Anggota::count();
+        $bidang = Bidang::count();
+        $programKerja = ProgramKerja::count();
 
         return response()->json([
             'success' => true,
             'data' => [
-                'anggota' => $anggota,
+                'kategori_kegiatan' => $kategori,
                 'kegiatan' => $kegiatan,
+                'bidang' => $bidang,
+                'program_kerja' => $programKerja,
+                'anggota' => $anggota,
             ]
         ]);
     }

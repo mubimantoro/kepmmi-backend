@@ -17,9 +17,9 @@ class Kegiatan extends Model
         'konten'
     ];
 
-    public function category()
+    public function kategori()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Kategori::class);
     }
 
     public function user()
