@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\BidangController;
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\DashboardController;
+use App\Http\Controllers\Api\Admin\GaleriController;
 use App\Http\Controllers\Api\Admin\KategoriController;
 use App\Http\Controllers\Api\Admin\KegiatanController;
 use App\Http\Controllers\Api\Admin\PermissionController;
@@ -34,8 +35,12 @@ Route::prefix('admin')->group(function () {
         Route::apiResource('/users', UserController::class)->middleware('permission:users');
 
         // Category
-        Route::apiResource('/categories', KategoriController::class)->middleware('permission:kategori');
         Route::get('/categories/all', [KategoriController::class, 'all'])->middleware('permission:kategori');
+        Route::apiResource('/categories', KategoriController::class)->middleware('permission:kategori');
+
+        // galeri
+        Route::apiResource('/galeri', GaleriController::class)
+            ->middleware('permission:galeri');
 
 
         Route::apiResource('/kegiatan', KegiatanController::class);

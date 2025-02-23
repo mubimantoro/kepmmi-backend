@@ -26,7 +26,7 @@ class DashboardController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'kategori_kegiatan' => $kategori,
+                'kategori' => $kategori,
                 'kegiatan' => $kegiatan,
                 'bidang' => $bidang,
                 'program_kerja' => $programKerja,

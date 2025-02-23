@@ -14,7 +14,7 @@ class UserController extends Controller
     {
         $users = User::when(request()->search, function ($users) {
             $users = $users->where('nama_lengkap', 'like', '%' . request()->search . '%');
-        })->latest()->paginate(5);
+        })->with('roles')->latest()->paginate(5);
 
         $users->appends(['search' => request()->search]);
 
@@ -46,6 +46,52 @@ class UserController extends Controller
         }
 
         return new UserResource(false, 'Data user gagal disimpan', null);
+    }
+
+    public function show($id)
+    {
+        $user = User::with('roles')->whereId($id)->first();
+
+        if ($user) {
+            return new UserResource(true, 'Detail data User', $user);
+        }
+
+        return new UserResource(false, 'Detail data User tidak ditemukan', null);
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $validator = Validator::make($request->all(), [
+            'nama_lengkap' => 'required',
+            'email' => 'required|unique:users,email' . $user->id,
+            'password' => 'confirmed'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+
+            if ($request->password == "") {
+
+                $user->update([
+                    'nama_lengkap' => $request->nama_lengkap,
+                    'email' => $request->email
+                ]);
+            } else {
+                $user->update([
+                    'nama_lengkap' => $request->nama_lengkap,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password)
+                ]);
+            }
+
+            $user->syncRoles($request->roles);
+
+            if ($user) {
+                return new UserResource(true, 'Data User berhasil diperbarui', $user);
+            }
+
+            return new UserResource(false, 'Data User gagal diperbarui', null);
+        }
     }
 
     public function destroy(User $user)

@@ -13,7 +13,7 @@ class Kegiatan extends Model
         'user_id',
         'judul',
         'slug',
-        'image',
+        'gambar',
         'konten'
     ];
 

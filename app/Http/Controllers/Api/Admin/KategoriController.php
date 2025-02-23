@@ -38,24 +38,24 @@ class KategoriController extends Controller
         ]);
 
         if ($category) {
-            return new KategoriResource(true, 'Data kategori kegiatan berhasil disimpan', $category);
+            return new KategoriResource(true, 'Data kategori berhasil disimpan', $category);
         }
 
-        return new KategoriResource(false, 'Data kategori kegiatan gagal disimpan', null);
+        return new KategoriResource(false, 'Data kategori gagal disimpan', null);
     }
 
     public function destroy(Kategori $category)
     {
         if ($category->delete()) {
-            return new KategoriResource(true, 'Data kategori kegiatan berhasil dihapus', null);
+            return new KategoriResource(true, 'Data kategori berhasil dihapus', null);
         }
 
-        return new KategoriResource(false, 'Data kategori kegiatan gagal dihapus', null);
+        return new KategoriResource(false, 'Data kategori gagal dihapus', null);
     }
 
     public function all()
     {
         $category = Kategori::latest()->get();
-        return new KategoriResource(true, 'List data kategori kegiatan', $category);
+        return new KategoriResource(true, 'List data kategori', $category);
     }
 }
