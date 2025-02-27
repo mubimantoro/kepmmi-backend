@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Admin\KegiatanController;
 use App\Http\Controllers\Api\Admin\PermissionController;
 use App\Http\Controllers\Api\Admin\ProgramKerjaController;
 use App\Http\Controllers\Api\Admin\RoleController;
+use App\Http\Controllers\Api\Admin\TentangOrganisasiController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
@@ -47,5 +48,7 @@ Route::prefix('admin')->group(function () {
 
         Route::apiResource('/bidang', BidangController::class);
         Route::apiResource('/program-kerja', ProgramKerjaController::class);
+
+        Route::apiResource('/tentang-organisasi', TentangOrganisasiController::class)->middleware('permission:tentang_organisasi');
     });
 });

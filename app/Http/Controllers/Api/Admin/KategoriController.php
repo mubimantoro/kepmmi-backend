@@ -19,7 +19,7 @@ class KategoriController extends Controller
 
         $category->appends(['search' => request()->search]);
 
-        return new KategoriResource(true, 'List Data Kategori Kegiatan', $category);
+        return new KategoriResource(true, 'List data Kategori Kegiatan', $category);
     }
 
     public function store(Request $request)
@@ -38,24 +38,24 @@ class KategoriController extends Controller
         ]);
 
         if ($category) {
-            return new KategoriResource(true, 'Data kategori berhasil disimpan', $category);
+            return new KategoriResource(true, 'Data Kategori berhasil disimpan!', $category);
         }
 
-        return new KategoriResource(false, 'Data kategori gagal disimpan', null);
+        return new KategoriResource(false, 'Data Kategori gagal disimpan!', null);
     }
 
     public function destroy(Kategori $category)
     {
         if ($category->delete()) {
-            return new KategoriResource(true, 'Data kategori berhasil dihapus', null);
+            return new KategoriResource(true, 'Data Kategori berhasil dihapus!', null);
         }
 
-        return new KategoriResource(false, 'Data kategori gagal dihapus', null);
+        return new KategoriResource(false, 'Data Kategori gagal dihapus!', null);
     }
 
     public function all()
     {
         $category = Kategori::latest()->get();
-        return new KategoriResource(true, 'List data kategori', $category);
+        return new KategoriResource(true, 'List data Kategori', $category);
     }
 }
