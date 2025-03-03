@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TentangOrganisasiResource extends JsonResource
+class ProfilResource extends JsonResource
 {
     public $status;
     public $message;

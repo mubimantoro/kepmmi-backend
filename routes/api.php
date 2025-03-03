@@ -7,14 +7,17 @@ use App\Http\Controllers\Api\Admin\GaleriController;
 use App\Http\Controllers\Api\Admin\KategoriController;
 use App\Http\Controllers\Api\Admin\KegiatanController;
 use App\Http\Controllers\Api\Admin\PermissionController;
+use App\Http\Controllers\Api\Admin\ProfilController;
 use App\Http\Controllers\Api\Admin\ProgramKerjaController;
 use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\TentangOrganisasiController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [LoginController::class, 'index']);
+Route::post('/register', [RegisterController::class, 'index']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/logout', [LoginController::class, 'logout']);
@@ -49,6 +52,6 @@ Route::prefix('admin')->group(function () {
         Route::apiResource('/bidang', BidangController::class);
         Route::apiResource('/program-kerja', ProgramKerjaController::class);
 
-        Route::apiResource('/tentang-organisasi', TentangOrganisasiController::class)->middleware('permission:tentang_organisasi');
+        Route::apiResource('/profil', ProfilController::class)->middleware('permission:profil');
     });
 });
