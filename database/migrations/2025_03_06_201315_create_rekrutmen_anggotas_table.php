@@ -11,17 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pendaftaran_anggotas', function (Blueprint $table) {
+        Schema::create('rekrutmen_anggotas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->text('alamat');
-            $table->string('tempat_lahir');
-            $table->date('tanggal_lahir');
-            $table->string('asal_kampus');
-            $table->string('jurusan', 100);
-            $table->string('angkatan_akademik', 15);
-            $table->string('asal_daerah');
-            $table->string('status');
+            $table->foreignId('periode_rekrutmen_anggota_id')->references('id')->on('periode_rekrutmen_anggotas')->cascadeOnDelete();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
@@ -31,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pendaftaran_anggotas');
+        Schema::dropIfExists('rekrutmen_anggotas');
     }
 };

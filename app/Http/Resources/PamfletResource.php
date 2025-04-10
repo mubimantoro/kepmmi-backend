@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class KegiatanResource extends JsonResource
+class PamfletResource extends JsonResource
 {
     public $status;
     public $message;
@@ -16,13 +16,17 @@ class KegiatanResource extends JsonResource
         $this->status = $status;
         $this->message = $message;
     }
-
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(Request $request): array
     {
         return [
             'success' => $this->status,
             'message' => $this->message,
-            'data' => $this->resource
+            'data' => $this->resource,
         ];
     }
 }

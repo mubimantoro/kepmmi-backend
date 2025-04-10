@@ -37,7 +37,7 @@ class KegiatanController extends Controller
         }
 
         $image = $request->file('gambar');
-        $image->storeAs('public/kegiatan', $image->hashName());
+        $image->storeAs('kegiatan', $image->hashName(), 'public');
 
         $kegiatan = Kegiatan::create([
             'gambar' => $image->hashName(),
@@ -82,7 +82,7 @@ class KegiatanController extends Controller
             Storage::disk('local')->delete('public/kegiatan/' . basename($kegiatan->gambar));
 
             $image = $request->file('gambar');
-            $image->storeAs('public/kegiatan', $image->hashName());
+            $image->storeAs('kegiatan', $image->hashName(), 'public');
 
             $kegiatan->update([
                 'gambar' => $image->hashName(),

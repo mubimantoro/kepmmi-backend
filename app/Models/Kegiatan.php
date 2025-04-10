@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kegiatan extends Model
 {
-    //
     protected $fillable = [
         'kategori_id',
         'user_id',
@@ -27,10 +26,10 @@ class Kegiatan extends Model
         return $this->belongsTo(User::class);
     }
 
-    protected function image(): Attribute
+    protected function gambar(): Attribute
     {
         return Attribute::make(
-            get: fn($image) => url('/storage/kegiatans/' .  $image)
+            get: fn($gambar) => url('/storage/kegiatan/' .  $gambar)
         );
     }
 }

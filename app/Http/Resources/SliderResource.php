@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class GaleriResource extends JsonResource
+class SliderResource extends JsonResource
 {
     public $status;
     public $message;
@@ -18,6 +18,7 @@ class GaleriResource extends JsonResource
     }
 
     /**
+     * 
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
@@ -25,9 +26,9 @@ class GaleriResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'success' => $this->status,
-            'message' => $this->message,
-            'data' => $this->resource,
+            'success'   => $this->status,
+            'message'   => $this->message,
+            'data'      => $this->resource
         ];
     }
 }

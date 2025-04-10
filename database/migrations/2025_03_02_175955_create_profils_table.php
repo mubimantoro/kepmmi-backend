@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('profils', function (Blueprint $table) {
             $table->id();
-            $table->string('logo');
-            $table->string('buku_saku');
-            $table->string('pedoman_intern');
-            $table->text('ringkasan');
+            $table->string('avatar')->nullable();
+            $table->string('alamat');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->string('asal_kampus');
+            $table->string('jurusan');
+            $table->string('angkatan_akademik');
+            $table->string('asal_daerah');
             $table->timestamps();
         });
     }

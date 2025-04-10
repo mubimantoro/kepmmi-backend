@@ -10,11 +10,22 @@ use Illuminate\Support\Facades\Validator;
 
 class BidangController extends Controller
 {
+
+    public function index()
+    {
+        $bidangs = Bidang::when(request()->search, function ($bidangs) {
+            $bidangs = $bidangs->where('nama', 'like', '%' . request()->search . '%');
+        })->latest()->paginate(5);
+
+        $bidangs->appends(['search' => request()->search]);
+        return new BidangResource(true, 'List Bidang Organisasi', $bidangs);
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama',
-            'tugas'
+            'nama' => 'required',
+            'tugas' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -22,21 +33,23 @@ class BidangController extends Controller
         }
 
         $bidang = Bidang::create([
-            'nama',
-            'tugas'
+            'nama' => $request->nama,
+            'tugas' => $request->tugas
         ]);
 
         if ($bidang) {
-            return new BidangResource(true, 'Data bidang berhasil ditambahkan', $bidang);
+            return new BidangResource(true, 'Data Bidang berhasil disimpan!', $bidang);
         }
+
+        return new BidangResource(false, 'Data Bidang gagal disimpan!', $bidang);
     }
 
-    public function destory(Bidang $bidang)
+    public function destroy(Bidang $bidang)
     {
         if ($bidang->delete()) {
-            return new BidangResource(true, 'Data bidang berhasil dihapus', null);
+            return new BidangResource(true, 'Data Bidang berhasil dihapus!', null);
         }
 
-        return new BidangResource(false, 'Data bidang gagal dihapus', null);
+        return new BidangResource(false, 'Data Bidang gagal dihapus!', null);
     }
 }
