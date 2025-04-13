@@ -8,13 +8,11 @@ class Anggota extends Model
 {
     protected $fillable = [
         'user_id',
-        'alamat',
-        'tempat_lahir',
-        'tanggal_lahir',
-        'asal_kampus',
-        'jurusan',
-        'angkatan_akademik',
-        'asal_daerah',
-        'status'
+        'jenis_anggota_id'
     ];
+
+    public function jenisAnggota()
+    {
+        return $this->belongsTo(JenisAnggota::class);
+    }
 }

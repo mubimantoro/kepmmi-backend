@@ -14,14 +14,7 @@ return new class extends Migration
         Schema::create('anggotas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->text('alamat');
-            $table->string('tempat_lahir');
-            $table->date('tanggal_lahir');
-            $table->string('asal_kampus');
-            $table->string('jurusan', 100);
-            $table->string('angkatan_akademik', 15);
-            $table->string('asal_daerah');
-            $table->string('status');
+            $table->foreignId('jenis_anggota_id')->references('id')->on('jenis_anggotas')->onDelete('restrict');
             $table->timestamps();
         });
     }

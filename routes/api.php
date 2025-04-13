@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\AnggotaController;
 use App\Http\Controllers\Api\Admin\BidangController;
 use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\GaleriController;
+use App\Http\Controllers\Api\Admin\JenisAnggotaController;
 use App\Http\Controllers\Api\Admin\KategoriController;
 use App\Http\Controllers\Api\Admin\KegiatanController;
 use App\Http\Controllers\Api\Admin\PamfletController;
+use App\Http\Controllers\Api\Admin\PengurusController;
 use App\Http\Controllers\Api\Admin\PeriodeRekrutmenAnggotaController;
 use App\Http\Controllers\Api\Admin\PermissionController;
 use App\Http\Controllers\Api\Admin\ProfilController;
@@ -61,6 +64,12 @@ Route::prefix('admin')->group(function () {
         Route::apiResource('/pamflet', PamfletController::class)->middleware('permission:pamflet');
 
         Route::apiResource('/periode-rekrutmen', PeriodeRekrutmenAnggotaController::class)->middleware('permission:periode_rekrutmen_anggota');
+
+        Route::apiResource('/pengurus', PengurusController::class)->middleware('permission:pengurus');
+
+        Route::apiResource('/jenis-anggota', JenisAnggotaController::class)->middleware('permission:jenis_anggota');
+
+        Route::apiResource('/anggota', AnggotaController::class)->middleware('permission:anggota');
 
         Route::get('/rekrutmen-anggota', [RekrutmenAnggotaController::class, 'index']);
         Route::put('/rekrutmen-anggota/{id}/status', [RekrutmenAnggotaController::class, 'updateStatusRekrutmen']);

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Pengurus extends Model
@@ -9,6 +10,7 @@ class Pengurus extends Model
     protected $fillable = [
         'user_id',
         'jabatan',
+        'avatar',
         'status'
     ];
 
@@ -17,11 +19,10 @@ class Pengurus extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function profil()
+    protected function avatar(): Attribute
     {
-        return $this->hasOneThrough(
-            Profil::class,
-            User::class
+        return Attribute::make(
+            get: fn($avatar) => url('/storage/pengurus', $avatar)
         );
     }
 }

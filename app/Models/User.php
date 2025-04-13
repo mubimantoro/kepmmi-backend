@@ -82,8 +82,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(RekrutmenAnggota::class);
     }
 
-    public function hasCompletedProfile()
+    public function pengurus()
     {
-        return $this->profil !== null;
+        return $this->hasOne(Pengurus::class);
     }
 }
