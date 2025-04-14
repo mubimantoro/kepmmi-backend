@@ -29,6 +29,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/logout', [LoginController::class, 'logout']);
 });
 
+Route::get('/test', function () {
+    return response()->json(['message' => 'API is working!']);
+});
+
 Route::prefix('admin')->group(function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/dashboard', DashboardController::class);
