@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'paths' => ['*'],
+    'paths' => ['api/*'],
     'allowed_origins' => ['*'],  // In production, specify your frontend domain
     'allowed_methods' => ['*'],
     'allowed_headers' => ['*'],
