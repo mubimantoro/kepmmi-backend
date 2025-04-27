@@ -24,13 +24,13 @@ class RolesTableSeeder extends Seeder
         ]);
 
         Role::create([
-            'name' => 'Anggota',
+            'name' => 'Bidang 4',
             'guard_name' => 'api',
         ]);
 
         Role::create([
-            'name' => 'Bidang 4',
-            'guard_name' => 'api',
+            'name' => 'Member',
+            'guard_name' => 'api'
         ]);
     }
 }

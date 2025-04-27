@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\Admin\AnggotaController;
 use App\Http\Controllers\Api\Admin\BidangController;
 use App\Http\Controllers\Api\Admin\DashboardController;
-use App\Http\Controllers\Api\Admin\GaleriController;
 use App\Http\Controllers\Api\Admin\JenisAnggotaController;
 use App\Http\Controllers\Api\Admin\KategoriController;
 use App\Http\Controllers\Api\Admin\KegiatanController;
@@ -22,15 +21,29 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 
+Route::post('/register', [RegisterController::class, 'index']);
 Route::post('/login', [LoginController::class, 'index']);
 Route::post('/register', [RegisterController::class, 'index']);
 
-Route::group(['middleware' => 'auth:api'], function () {
-    Route::post('/logout', [LoginController::class, 'logout']);
+Route::prefix('public')->group(function () {
+    Route::get('/categories', [App\Http\Controllers\Api\Public\CategoryController::class, 'index']);
+    Route::get('/kegiatan', [App\Http\Controllers\Api\Public\KegiatanController::class, 'index']);
+    Route::get('/kegiatan/{slug}', [App\Http\Controllers\Api\Public\KegiatanController::class, 'show']);
+    Route::get('/kegiatan-home', [App\Http\Controllers\Api\Public\KegiatanController::class, 'homePage']);
+    Route::post('/kegiatan/store-image', [App\Http\Controllers\Api\Public\KegiatanController::class, 'storeImageKegiatan']);
+    Route::get('/sliders', [App\Http\Controllers\Api\Public\SliderController::class, 'index']);
+    Route::get('/pamflet', [App\Http\Controllers\Api\Public\PamfletController::class, 'index']);
+    Route::get('/program-kerja', [App\Http\Controllers\Api\Public\ProgramKerjaController::class, 'index']);
 });
 
-Route::get('/test', function () {
-    return response()->json(['message' => 'API is working!']);
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::post('/logout', [LoginController::class, 'logout']);
+
+    Route::get('/profile', [App\Http\Controllers\Api\Public\UserProfileController::class, 'show']);
+    Route::post('/profile/update', [App\Http\Controllers\Api\Public\UserProfileController::class, 'update']);
+
+    Route::post('/rekrutmen-anggota/daftar', [App\Http\Controllers\Api\Public\PendaftaranAnggotaController::class, 'store']);
+    Route::get('/periode-rekrutmen', [App\Http\Controllers\Api\Public\PeriodeRekrutmenController::class, 'index']);
 });
 
 Route::prefix('admin')->group(function () {
@@ -55,9 +68,11 @@ Route::prefix('admin')->group(function () {
         // kegiatan
         Route::apiResource('/kegiatan', KegiatanController::class)->middleware('permission:kegiatan');
 
+        // bidang
+        Route::get('/bidangs/all', [BidangController::class, 'all'])->middleware('permission:bidang');
         Route::apiResource('/bidang', BidangController::class)->middleware('permission:bidang');
 
-        Route::apiResource('/program-kerja', ProgramKerjaController::class);
+        Route::apiResource('/program-kerja', ProgramKerjaController::class)->middleware('permission:program_kerja');
 
         Route::apiResource('/profil', ProfilController::class)->middleware('permission:profil');
 
@@ -78,15 +93,4 @@ Route::prefix('admin')->group(function () {
         Route::get('/rekrutmen-anggota', [RekrutmenAnggotaController::class, 'index']);
         Route::put('/rekrutmen-anggota/{id}/status', [RekrutmenAnggotaController::class, 'updateStatusRekrutmen']);
     });
-});
-
-Route::prefix('public')->group(function () {
-    Route::get('/kegiatan', [App\Http\Controllers\Api\Public\KegiatanController::class, 'index']);
-    Route::get('/kegiatan/{slug}', [App\Http\Controllers\Api\Public\KegiatanController::class, 'show']);
-    Route::get('/kegiatan-home', [App\Http\Controllers\Api\Public\KegiatanController::class, 'homePage']);
-    Route::post('/kegiatan/store-image', [App\Http\Controllers\Api\Public\KegiatanController::class, 'storeImageKegiatan']);
-    Route::get('/pamflet', [App\Http\Controllers\Api\Public\PamfletController::class, 'index']);
-    Route::get('/sliders', [App\Http\Controllers\Api\Public\SliderController::class, 'index']);
-
-    Route::post('/rekrutmen-anggota/daftar', [App\Http\Controllers\Api\Public\PendaftaranAnggotaController::class, 'store']);
 });

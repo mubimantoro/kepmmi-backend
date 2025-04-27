@@ -10,6 +10,19 @@ use Illuminate\Support\Facades\Validator;
 
 class ProgramKerjaController extends Controller
 {
+
+    public function index()
+    {
+        $programKerjas = ProgramKerja::with('bidang')
+            ->when(request()->search, function ($query) {
+                $query->where('nama', 'like', '%', request()->search . '%');
+            })->latest()->paginate(5);
+
+        $programKerjas->appends(['search' => request()->search]);
+
+        return new ProgramKerjaResource(true, 'List data Program Kerja', $programKerjas);
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -29,18 +42,43 @@ class ProgramKerjaController extends Controller
         ]);
 
         if ($programKerja) {
-            return new ProgramKerjaResource(true, 'Data program kerja berhasil ditambahkan', $programKerja);
+            return new ProgramKerjaResource(true, 'Data Program Kerja berhasil disimpan!', $programKerja);
         }
 
-        return new ProgramKerjaResource(false, 'Data program kerja gagal disimpan', null);
+        return new ProgramKerjaResource(false, 'Data Program Kerja gagal disimpa!n', null);
+    }
+
+    public function update(Request $request, ProgramKerja $programKerja)
+    {
+        $validator  = Validator::make($request->all(), [
+            'bidang_id' => 'required',
+            'nama' => 'required',
+            'status' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $programKerja->update([
+            'nama' => $request->nama,
+            'status' => $request->status,
+            'bidang_id' => $request->bidang_id
+        ]);
+
+        if ($programKerja) {
+            return new ProgramKerjaResource(true, 'Data Program Kerja berhasil diupdate!', $programKerja);
+        }
+
+        return new ProgramKerjaResource(false, 'Data Program Kerja gagal diupdate!', null);
     }
 
     public function destroy(ProgramKerja $programKerja)
     {
         if ($programKerja->delete()) {
-            return new ProgramKerjaResource(true, 'Data program kerja berhasil dihapus', null);
+            return new ProgramKerjaResource(true, 'Data Program Kerja berhasil dihapus!', null);
         }
 
-        return new ProgramKerjaResource(false, 'Data program kerja gagal dihapus', null);
+        return new ProgramKerjaResource(false, 'Data Program Kerja gagal dihapus!', null);
     }
 }

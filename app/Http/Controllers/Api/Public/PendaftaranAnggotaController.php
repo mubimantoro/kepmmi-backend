@@ -13,8 +13,6 @@ class PendaftaranAnggotaController extends Controller
     public function store()
     {
         $periodeIsAktif = PeriodeRekrutmenAnggota::where('status', true)
-            ->whereDate('tanggal_mulai', '<=', now())
-            ->whereDate('tanggal_selesai', '>=', now())
             ->first();
 
         if (!$periodeIsAktif) {

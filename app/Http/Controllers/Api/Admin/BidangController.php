@@ -47,9 +47,15 @@ class BidangController extends Controller
     public function destroy(Bidang $bidang)
     {
         if ($bidang->delete()) {
-            return new BidangResource(true, 'Data Bidang berhasil dihapus!', null);
+            return new BidangResource(true, 'Data Bidang Organisasi berhasil dihapus!', null);
         }
 
-        return new BidangResource(false, 'Data Bidang gagal dihapus!', null);
+        return new BidangResource(false, 'Data Bidang Organisasi gagal dihapus!', null);
+    }
+
+    public function all()
+    {
+        $bidangs = Bidang::latest()->get();
+        return new BidangResource(true, 'List data Bidang Organisasi', $bidangs);
     }
 }

@@ -24,6 +24,10 @@ class SliderController extends Controller
             'gambar' => 'required|image|mimes:png,jpg,jpeg|max:5120'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
         $image = $request->file('gambar');
         $image->storeAs('sliders', $image->hashName(), 'public');
 

@@ -25,6 +25,7 @@ class User extends Authenticatable implements JWTSubject
         'nama_lengkap',
         'email',
         'password',
+        'avatar',
     ];
 
     /**
@@ -72,11 +73,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Kegiatan::class);
     }
 
-    public function profil()
-    {
-        return $this->hasOne(Profil::class);
-    }
-
     public function rekrutmenAnggota()
     {
         return $this->hasMany(RekrutmenAnggota::class);
@@ -85,5 +81,10 @@ class User extends Authenticatable implements JWTSubject
     public function pengurus()
     {
         return $this->hasOne(Pengurus::class);
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
     }
 }

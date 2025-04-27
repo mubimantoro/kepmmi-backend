@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -13,27 +14,37 @@ class RegisterController extends Controller
     public function index(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_lengkap' => 'required',
-            'email' => 'required|unique:users',
-            'password' => 'required|confirmed'
+            'nama_lengkap' => 'required|string',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string|min:8'
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        $user = User::create([
-            'nama_lengkap' => $request->nama_lengkap,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
-        ]);
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'nama_lengkap' => $request->nama_lengkap,
+                'email' => $request->email,
+                'password' => bcrypt($request->password)
+            ]);
 
-        $user->assignRole($request->roles);
+            $user->assignRole('Member');
 
-        if ($user) {
-            return new UserResource(true, 'Data User berhasil disimpan!', $user);
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Registrasi berhasil',
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Registrasi gagal: ' . $e->getMessage()
+            ], 500);
         }
-
-        return new UserResource(false, 'Data User gagal disimpan!', null);
     }
 }
