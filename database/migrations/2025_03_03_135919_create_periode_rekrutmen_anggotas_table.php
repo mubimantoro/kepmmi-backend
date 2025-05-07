@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
-            $table->boolean('status')->default(false);
+            $table->boolean('is_aktif')->default(false);
             $table->timestamps();
         });
     }

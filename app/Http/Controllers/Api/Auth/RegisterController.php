@@ -31,7 +31,7 @@ class RegisterController extends Controller
                 'password' => bcrypt($request->password)
             ]);
 
-            $user->assignRole('Member');
+            $user->assignRole('Guest');
 
             DB::commit();
 

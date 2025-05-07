@@ -12,20 +12,35 @@ class PendaftaranAnggotaController extends Controller
 {
     public function store()
     {
-        $periodeIsAktif = PeriodeRekrutmenAnggota::where('status', true)
+
+        $user = auth()->guard('api')->user();
+
+        if (!$this->isProfileComplete($user)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Silakan lengkapi profil Anda terlebih dahulu'
+            ]);
+        }
+
+        $periodeIsAktif = PeriodeRekrutmenAnggota::where('is_aktif', true)
             ->first();
 
         if (!$periodeIsAktif) {
-            return new RekrutmenAnggotaResource(false, 'Tidak ada periode pendaftaran anggota yang aktif!', null);
+            return response()->json([
+                'status' => false,
+                'message' => 'Tidak ada periode pendaftaran anggota yang aktif!'
+            ]);
         }
 
-        $user = auth()->guard('api')->user();
         $sudahDaftar = RekrutmenAnggota::where('user_id', $user->id)
             ->where('periode_rekrutmen_anggota_id', $periodeIsAktif->id)
             ->exists();
 
         if ($sudahDaftar) {
-            return new RekrutmenAnggotaResource(false, 'Anda sudah mendaftar pada periode rekrutmen ini!', null);
+            return response()->json([
+                'status' => false,
+                'message' => 'Anda sudah mendaftar pada periode rekrutmen ini!'
+            ]);
         }
 
         $pendaftaran = RekrutmenAnggota::create([
@@ -35,5 +50,30 @@ class PendaftaranAnggotaController extends Controller
         ]);
 
         return new RekrutmenAnggotaResource(true, 'Pendaftaran berhasil dilakukan!', $pendaftaran);
+    }
+
+    private function isProfileComplete($user)
+    {
+        if (!$user->profile) {
+            return false;
+        }
+
+        $requiredFields = [
+            'alamat',
+            'tempat_lahir',
+            'tanggal_lahir',
+            'asal_kampus',
+            'jurusan',
+            'angkatan_akademik',
+            'asal_daerah'
+        ];
+
+        foreach ($requiredFields as $field) {
+            if (empty($user->profile->$field)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

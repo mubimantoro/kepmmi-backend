@@ -10,11 +10,11 @@ class PeriodeRekrutmenAnggota extends Model
         'nama',
         'tanggal_mulai',
         'tanggal_selesai',
-        'status'
+        'is_aktif'
     ];
 
     protected $casts = [
-        'status' => 'boolean'
+        'is_aktif' => 'boolean'
     ];
 
     public function rekrutmenAnggotas()

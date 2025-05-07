@@ -24,22 +24,22 @@ class PeriodeRekrutmenAnggotaController extends Controller
             'nama' => 'required',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'status' => 'boolean'
+            'is_aktif' => 'boolean'
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        if ($request->status) {
-            PeriodeRekrutmenAnggota::where('status', true)->update(['status' => false]);
+        if ($request->is_aktif) {
+            PeriodeRekrutmenAnggota::where('is_aktif', true)->update(['is_aktif' => false]);
         }
 
         $periode = PeriodeRekrutmenAnggota::create([
             'nama' => $request->nama,
             'tanggal_mulai' => $request->tanggal_mulai,
             'tanggal_selesai' => $request->tanggal_selesai,
-            'status' => $request->status ?? false,
+            'is_aktif' => $request->is_aktif ?? false,
         ]);
 
         if ($periode) {
@@ -57,5 +57,11 @@ class PeriodeRekrutmenAnggotaController extends Controller
 
 
         return new PeriodeRekrutmenAnggotaResource(false, 'Data Periode Rekrutmen Anggota gagal dihapus!', null);
+    }
+
+    public function all()
+    {
+        $periode = PeriodeRekrutmenAnggota::latest()->get();
+        return new PeriodeRekrutmenAnggotaResource(true, 'List Periode Rekrutmen Anggota', $periode);
     }
 }

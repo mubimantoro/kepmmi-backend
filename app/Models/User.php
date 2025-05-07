@@ -77,14 +77,17 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(RekrutmenAnggota::class);
     }
-
-    public function pengurus()
-    {
-        return $this->hasOne(Pengurus::class);
-    }
-
     public function profile()
     {
         return $this->hasOne(UserProfile::class);
+    }
+
+    public function getAvatar($avatar)
+    {
+        if ($avatar):
+            return asset('storage/avatars/' . $avatar);
+        else :
+            return 'https://ui-avatars.com/api/?name=' . str_replace(' ', '+', $this->name) . '&background=4e73df&color=ffffff&size=100';
+        endif;
     }
 }

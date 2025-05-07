@@ -7,12 +7,12 @@ use App\Http\Resources\PeriodeRekrutmenAnggotaResource;
 use App\Models\PeriodeRekrutmenAnggota;
 use Illuminate\Http\Request;
 
-class PeriodeRekrutmenController extends Controller
+class PeriodeRekrutmenAnggotaController extends Controller
 {
     public function index()
     {
         $periodes = PeriodeRekrutmenAnggota
-            ::where('status', true)
+            ::where('is_aktif', true)
             ->first();
 
         return new PeriodeRekrutmenAnggotaResource(true, 'List data Periode Rekrutmen Anggota', $periodes);

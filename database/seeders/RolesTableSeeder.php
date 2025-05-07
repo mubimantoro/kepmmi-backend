@@ -29,7 +29,7 @@ class RolesTableSeeder extends Seeder
         ]);
 
         Role::create([
-            'name' => 'Member',
+            'name' => 'Guest',
             'guard_name' => 'api'
         ]);
     }

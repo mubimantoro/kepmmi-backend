@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('penguruses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->string('nama_lengkap');
             $table->string('jabatan');
             $table->string('avatar');
-            $table->string('status');
             $table->timestamps();
         });
     }

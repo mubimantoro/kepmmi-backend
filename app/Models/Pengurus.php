@@ -8,21 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Pengurus extends Model
 {
     protected $fillable = [
-        'user_id',
+        'nama_lengkap',
         'jabatan',
         'avatar',
-        'status'
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn($avatar) => url('/storage/pengurus', $avatar)
+            get: fn($avatar) => url('/storage/pengurus/', $avatar)
         );
     }
 }

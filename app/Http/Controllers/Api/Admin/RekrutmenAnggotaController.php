@@ -13,13 +13,37 @@ use Illuminate\Support\Facades\Validator;
 class RekrutmenAnggotaController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
-        $rekrutmenAnggota = RekrutmenAnggota::with(['user', 'periodeRekrutmen'])
-            ->where('periode_rekrutmen_anggota_id', $request->periode_id)
-            ->paginate(10);
+        $rekrutmenAnggota = RekrutmenAnggota::with(['user' => function ($query) {
+            $query->with('profile');
+        }, 'periodeRekrutmenAnggota'])
+            ->when(request()->search, function ($query) {
+                $query->whereHas('user', function ($q) {
+                    $q->where('nama_lengkap', 'like', '%' . request()->search . '%');
+                });
+            })
+            ->when(request()->periode_rekrutmen_anggota_id, function ($query) {
+                $query->where('periode_rekrutmen_anggota_id', request()->periode_rekrutmen_anggota_id);
+            })
+            ->latest()
+            ->paginate(15);
 
-        return new RekrutmenAnggotaResource(true, 'List data Pendaftaran Anggota berhasil diperoleh!', $rekrutmenAnggota);
+        $rekrutmenAnggota->appends([
+            'search' => request()->search,
+            'periode_rekrutmen_anggota_id' => request()->periode_rekrutmen_anggota_id
+        ]);
+
+
+        return new RekrutmenAnggotaResource(true, 'List data Pendaftaran Anggota', $rekrutmenAnggota);
+    }
+
+    public function show($id)
+    {
+        $pendaftaran = RekrutmenAnggota::with(['user' => function ($query) {
+            $query->with('profile');
+        },  'periodeRekrutmenAnggota'])->findOrFail($id);
+        return new RekrutmenAnggotaResource(true, 'Detail Pendaftaran Anggota!', $pendaftaran);
     }
 
     public function updateStatusRekrutmen(Request $request, $id)
@@ -37,13 +61,6 @@ class RekrutmenAnggotaController extends Controller
             'status' => $request->status
         ]);
 
-        if ($request->status === 'Diterima') {
-            $user = User::find($pendaftaran->user_id);
-            if ($user) {
-                $user->assignRole('Anggota');
-            }
-        }
-
-        return new RekrutmenAnggotaResource(true, 'Status pendaftaran berhasil diperbarui', $pendaftaran->load(['user', 'periodeRekrutmen']));
+        return new RekrutmenAnggotaResource(true, 'Status pendaftaran berhasil diperbarui', $pendaftaran->load(['user', 'periodeRekrutmenAnggota']));
     }
 }
