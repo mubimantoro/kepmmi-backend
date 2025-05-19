@@ -18,6 +18,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'program_kerja', 'guard_name' => 'api']);
         Permission::create(['name' => 'kegiatan', 'guard_name' => 'api']);
         Permission::create(['name' => 'anggota', 'guard_name' => 'api']);
+        Permission::create(['name' => 'jenis_anggota', 'guard_name' => 'api']);
         Permission::create(['name' => 'profil', 'guard_name' => 'api']);
         Permission::create(['name' => 'struktur_pengurus', 'guard_name' => 'api']);
         Permission::create(['name' => 'rekrutmen_anggota', 'guard_name' => 'api']);

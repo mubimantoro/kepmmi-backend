@@ -43,4 +43,10 @@ class JenisAnggotaController extends Controller
 
         return new JenisAnggotaResource(true, 'Data Jenis Anggota berhasil dihapus!', null);
     }
+
+    public function all()
+    {
+        $jenisAnggota = JenisAnggota::latest()->get();
+        return new JenisAnggotaResource(true, 'List data Jenis Anggota', $jenisAnggota);
+    }
 }

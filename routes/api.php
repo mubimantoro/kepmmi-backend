@@ -20,8 +20,8 @@ use App\Http\Controllers\Api\Admin\StrukturPengurusController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
-use App\Models\PeriodeRekrutmenAnggota;
-use App\Models\RekrutmenAnggota;
+use App\Http\Controllers\Api\Public\AnggotaContoller;
+use App\Models\Anggota;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisterController::class, 'index']);
@@ -49,30 +49,26 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/rekrutmen-anggota/daftar', [App\Http\Controllers\Api\Public\PendaftaranAnggotaController::class, 'store']);
     Route::get('/periode-rekrutmen/active', [App\Http\Controllers\Api\Public\PeriodeRekrutmenAnggotaController::class, 'index']);
+    Route::get('/rekrutmen-anggota/riwayat', [App\Http\Controllers\Api\Public\RiwayatPendaftaranAnggotaController::class]);
+    Route::get('/anggota', AnggotaContoller::class);
 });
 
 Route::prefix('admin')->group(function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/dashboard', DashboardController::class);
-
         // permissions
         Route::get('/permissions', [PermissionController::class, 'index'])->middleware('permission:permissions');
         Route::get('/permissions/all', [PermissionController::class, 'all'])->middleware('permission:permissions');
-
         // roles
         Route::get('/roles/all', [RoleController::class, 'all'])->middleware('permission:roles');
         Route::apiResource('/roles', RoleController::class)->middleware('permission:roles');
-
         // users
         Route::apiResource('/users', UserController::class)->middleware('permission:users');
-
         // Category
         Route::get('/categories/all', [KategoriController::class, 'all'])->middleware('permission:kategori');
         Route::apiResource('/categories', KategoriController::class)->middleware('permission:kategori');
-
         // kegiatan
         Route::apiResource('/kegiatan', KegiatanController::class)->middleware('permission:kegiatan');
-
         // bidang
         Route::get('/bidangs/all', [BidangController::class, 'all'])->middleware('permission:bidang');
         Route::apiResource('/bidang', BidangController::class)->middleware('permission:bidang');
@@ -94,9 +90,10 @@ Route::prefix('admin')->group(function () {
 
         Route::apiResource('/pengurus', PengurusController::class)->middleware('permission:pengurus');
 
-        Route::apiResource('/jenis-anggota', JenisAnggotaController::class)->middleware('permission:jenis_anggota');
+        Route::get('/jenis-anggota/all', [JenisAnggotaController::class, 'all'])->middleware('permission:jenis_anggota');
 
         Route::apiResource('/anggota', AnggotaController::class)->middleware('permission:anggota');
+
 
         Route::get('/rekrutmen-anggota', [RekrutmenAnggotaController::class, 'index'])->middleware('permission:rekrutmen_anggota');
         Route::get('/rekrutmen-anggota/{id}', [RekrutmenAnggotaController::class, 'show'])->middleware('permission:rekrutmen_anggota');

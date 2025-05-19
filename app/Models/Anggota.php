@@ -11,6 +11,11 @@ class Anggota extends Model
         'jenis_anggota_id'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function jenisAnggota()
     {
         return $this->belongsTo(JenisAnggota::class);

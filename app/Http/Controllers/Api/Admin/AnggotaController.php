@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AnggotaResource;
 use App\Models\Anggota;
+use App\Models\RekrutmenAnggota;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,14 +14,45 @@ class AnggotaController extends Controller
 {
     public function index()
     {
-        $anggotas = Anggota::with(['user', 'jenisAnggota'])->get();
+        $anggota = User::with([
+            'profile',
+            'rekrutmenAnggota' => function ($query) {
+                $query->where('status', 'diterima');
+            },
+            'anggota',
+            'anggota.jenisAnggota'
+        ])
+            ->whereHas('rekrutmenAnggota', function ($query) {
+                $query->where('status', 'diterima');
+            })
+            ->latest()
+            ->paginate(5);
 
-        return new AnggotaResource(true, 'List data Jenis Anggota', $anggotas);
+
+        return new AnggotaResource(true, 'List data User', $anggota);
+    }
+
+    public function show($id)
+    {
+        $anggota = User::with([
+            'profile',
+            'rekrutmenAnggota' => function ($query) {
+                $query->where('status', 'diterima');
+            },
+            'rekrutmenAnggota.periodeRekrutmenAnggota',
+            'anggota',
+            'anggota.jenisAnggota'
+        ])
+            ->where('id', $id)
+            ->first();
+
+        return new AnggotaResource(true, 'Detail data Anggota', $anggota);
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
             'jenis_anggota_id' => 'required'
         ]);
 
@@ -27,9 +60,23 @@ class AnggotaController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $anggota = Anggota::create([
-            'jenis_anggota_id' => $request->jenis_anggota_id
-        ]);
+        $hasAcceptedRekrutmen = RekrutmenAnggota::where('user_id', $request->user_id)
+            ->where('status', 'diterima')
+            ->exists();
+
+        if (!$hasAcceptedRekrutmen) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User belum diterima pada proses Rekrutmen Anggota!'
+            ]);
+        }
+
+        $anggota = Anggota::updateOrCreate(
+            ['user_id' => $request->user_id],
+            ['jenis_anggota_id' => $request->jenis_anggota_id],
+        );
+
+        $anggota->load(['user', 'jenisAnggota']);
 
         return new AnggotaResource(true, 'Data Anggota berhasil disimpan!', $anggota);
     }

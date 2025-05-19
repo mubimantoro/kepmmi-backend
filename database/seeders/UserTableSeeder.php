@@ -15,10 +15,16 @@ class UserTableSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $admin = User::create([
             'nama_lengkap' => 'Administrator',
             'email' => 'adminkepmmi@gmail.com',
             'password' => bcrypt('kepmmigtlo'),
+        ]);
+
+        $adminDev = User::create([
+            'nama_lengkap' => "Administrator Dev",
+            'email' => 'adminkepmmi@dev.com',
+            'password'  => bcrypt('password'),
         ]);
 
         $role = Role::find(1);
@@ -26,7 +32,7 @@ class UserTableSeeder extends Seeder
 
         $role->syncPermissions($permissions);
 
-        $user = User::find(1);
-        $user->assignRole($role->name);
+        $admin->assignRole($role->name);
+        $adminDev->assignRole($role->name);
     }
 }

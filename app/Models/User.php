@@ -68,6 +68,11 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
     public function kegiatans()
     {
         return $this->hasMany(Kegiatan::class);
@@ -77,9 +82,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(RekrutmenAnggota::class);
     }
-    public function profile()
+
+    public function anggota()
     {
-        return $this->hasOne(UserProfile::class);
+        return $this->hasOne(Anggota::class, 'user_id', 'id');
     }
 
     public function getAvatar($avatar)
