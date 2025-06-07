@@ -26,7 +26,7 @@ class KegiatanController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'gambar' => 'required|image|mimes:jpeg,jpg,png|max:5120',
+            'gambar' => 'required|image|mimes:jpeg,jpg,png|max:10240',
             'judul' => 'required',
             'konten' => 'required',
             'kategori_id' => 'required'

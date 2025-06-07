@@ -10,18 +10,16 @@ use App\Http\Controllers\Api\Admin\PamfletController;
 use App\Http\Controllers\Api\Admin\PengurusController;
 use App\Http\Controllers\Api\Admin\PeriodeRekrutmenAnggotaController;
 use App\Http\Controllers\Api\Admin\PermissionController;
-use App\Http\Controllers\Api\Admin\ProfilController;
 use App\Http\Controllers\Api\Admin\ProfilOrganisasiController;
 use App\Http\Controllers\Api\Admin\ProgramKerjaController;
 use App\Http\Controllers\Api\Admin\RekrutmenAnggotaController;
 use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\SliderController;
-use App\Http\Controllers\Api\Admin\StrukturPengurusController;
+use App\Http\Controllers\Api\Admin\StrukturOrganisasiController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Public\AnggotaContoller;
-use App\Models\Anggota;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisterController::class, 'index']);
@@ -57,46 +55,43 @@ Route::prefix('admin')->group(function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/dashboard', DashboardController::class);
         // permissions
-        Route::get('/permissions', [PermissionController::class, 'index'])->middleware('permission:permissions');
-        Route::get('/permissions/all', [PermissionController::class, 'all'])->middleware('permission:permissions');
+        Route::get('/permissions', [PermissionController::class, 'index'])->middleware('permission:permissions.index');
+        Route::get('/permissions/all', [PermissionController::class, 'all'])->middleware('permission:permissions.index');
         // roles
-        Route::get('/roles/all', [RoleController::class, 'all'])->middleware('permission:roles');
-        Route::apiResource('/roles', RoleController::class)->middleware('permission:roles');
+        Route::get('/roles/all', [RoleController::class, 'all'])->middleware('permission:roles.index');
+        Route::apiResource('/roles', RoleController::class)->middleware('permission:roles.index');
         // users
-        Route::apiResource('/users', UserController::class)->middleware('permission:users');
-        // Category
-        Route::get('/categories/all', [KategoriController::class, 'all'])->middleware('permission:kategori');
-        Route::apiResource('/categories', KategoriController::class)->middleware('permission:kategori');
-        // kegiatan
-        Route::apiResource('/kegiatan', KegiatanController::class)->middleware('permission:kegiatan');
+        Route::apiResource('/users', UserController::class)->middleware('permission:users.index');
+        // profil organisasi
+        Route::apiResource('/profil-organisasi', ProfilOrganisasiController::class)->middleware('permission:profil_organisasi.index|profil_organisasi.create|profil_organisasi.show|profil_organisasi.delete');
+        // struktur organisasi
+        Route::apiResource('/struktur-organisasi', StrukturOrganisasiController::class)->middleware('permission:struktur_organisasi.index|struktur_organisasi.create|struktur_organisasi.delete');
         // bidang
-        Route::get('/bidangs/all', [BidangController::class, 'all'])->middleware('permission:bidang');
-        Route::apiResource('/bidang', BidangController::class)->middleware('permission:bidang');
-
-        Route::apiResource('/program-kerja', ProgramKerjaController::class)->middleware('permission:program_kerja');
-
-        Route::apiResource('/profil', ProfilController::class)->middleware('permission:profil');
-
-        Route::apiResource('/profil-organisasi', ProfilOrganisasiController::class)->middleware('permission:profil_organisasi');
-
-        Route::apiResource('/struktur-pengurus', StrukturPengurusController::class)->middleware('permission:struktur_pengurus');
-
-        Route::apiResource('/sliders', SliderController::class)->middleware('permission:sliders');
-
-        Route::apiResource('/pamflet', PamfletController::class)->middleware('permission:pamflet');
-
-        Route::get('/periode-rekrutmen/all', [PeriodeRekrutmenAnggotaController::class, 'all'])->middleware('permission:periode_rekrutmen_anggota');
-        Route::apiResource('/periode-rekrutmen', PeriodeRekrutmenAnggotaController::class)->middleware('permission:periode_rekrutmen_anggota');
-
+        Route::get('/bidangs/all', [BidangController::class, 'all'])->middleware('permission:bidang.index');
+        Route::apiResource('/bidang', BidangController::class)->middleware('permission:bidang.index');
+        // Category
+        Route::get('/categories/all', [KategoriController::class, 'all'])->middleware('permission:kategori.index');
+        Route::apiResource('/categories', KategoriController::class)->middleware('permission:kategori.index|kategori.create');
+        // kegiatan
+        Route::apiResource('/kegiatan', KegiatanController::class)->middleware('permission:kegiatan.index');
+        // program kerja
+        Route::apiResource('/program-kerja', ProgramKerjaController::class)->middleware('permission:program_kerja.index');
+        // sliders
+        Route::apiResource('/sliders', SliderController::class)->middleware('permission:sliders.index|sliders.store|sliders.delete');
+        // pamflet
+        Route::apiResource('/pamflet', PamfletController::class)->middleware('permission:pamflet.index|pamflet.store|pamflet.delete');
+        // periode rekrutmen
+        Route::get('/periode-rekrutmen/all', [PeriodeRekrutmenAnggotaController::class, 'all'])->middleware('permission:periode_rekrutmen_anggota.index');
+        Route::apiResource('/periode-rekrutmen', PeriodeRekrutmenAnggotaController::class)->middleware('permission:periode_rekrutmen_anggota.index|periode_rekrutmen_anggota.store|periode_rekrutmen_anggota.delete');
+        // pengurus
         Route::apiResource('/pengurus', PengurusController::class)->middleware('permission:pengurus');
-
+        // jenis anggota
         Route::get('/jenis-anggota/all', [JenisAnggotaController::class, 'all'])->middleware('permission:jenis_anggota');
-
-        Route::apiResource('/anggota', AnggotaController::class)->middleware('permission:anggota');
-
-
-        Route::get('/rekrutmen-anggota', [RekrutmenAnggotaController::class, 'index'])->middleware('permission:rekrutmen_anggota');
-        Route::get('/rekrutmen-anggota/{id}', [RekrutmenAnggotaController::class, 'show'])->middleware('permission:rekrutmen_anggota');
-        Route::put('/rekrutmen-anggota/{id}/status', [RekrutmenAnggotaController::class, 'updateStatusRekrutmen']);
+        // anggota
+        Route::apiResource('/anggota', AnggotaController::class)->middleware('permission:anggota.index|anggota.store|anggota.show');
+        // rekrutmen anggota
+        Route::get('/rekrutmen-anggota', [RekrutmenAnggotaController::class, 'index'])->middleware('permission:rekrutmen_anggota.index');
+        Route::get('/rekrutmen-anggota/{id}', [RekrutmenAnggotaController::class, 'show'])->middleware('permission:rekrutmen_anggota.show');
+        Route::put('/rekrutmen-anggota/{id}/status', [RekrutmenAnggotaController::class, 'updateStatusRekrutmen'])->middleware('permission:rekrutmen_anggota.update');
     });
 });

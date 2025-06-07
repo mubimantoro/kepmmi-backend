@@ -5,18 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
-class Pengurus extends Model
+class StrukturOrganisasi extends Model
 {
     protected $fillable = [
-        'nama_lengkap',
-        'jabatan',
-        'avatar',
+        'gambar'
     ];
 
-    protected function avatar(): Attribute
+    protected function gambar(): Attribute
     {
         return Attribute::make(
-            get: fn($avatar) => url('/storage/pengurus/', $avatar)
+            get: fn($gambar) => url('/storage/struktur-organisasi/' . $gambar),
         );
     }
 }

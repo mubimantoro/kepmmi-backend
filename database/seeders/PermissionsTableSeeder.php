@@ -13,23 +13,69 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name' => 'kategori', 'guard_name' => 'api']);
-        Permission::create(['name' => 'bidang', 'guard_name' => 'api']);
-        Permission::create(['name' => 'program_kerja', 'guard_name' => 'api']);
-        Permission::create(['name' => 'kegiatan', 'guard_name' => 'api']);
-        Permission::create(['name' => 'anggota', 'guard_name' => 'api']);
-        Permission::create(['name' => 'jenis_anggota', 'guard_name' => 'api']);
-        Permission::create(['name' => 'profil', 'guard_name' => 'api']);
-        Permission::create(['name' => 'struktur_pengurus', 'guard_name' => 'api']);
-        Permission::create(['name' => 'rekrutmen_anggota', 'guard_name' => 'api']);
-        Permission::create(['name' => 'pamflet', 'guard_name' => 'api']);
-        Permission::create(['name' => 'periode_rekrutmen_anggota', 'guard_name' => 'api']);
-        Permission::create(['name' => 'pengurus', 'guard_name' => 'api']);
-        Permission::create(['name' => 'profil_organisasi', 'guard_name' => 'api']);
+        // kategori
+        Permission::create(['name' => 'kategori.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'kategori.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'kategori.delete', 'guard_name' => 'api']);
+        // bidang
+        Permission::create(['name' => 'bidang.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'bidang.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'bidang.delete', 'guard_name' => 'api']);
+        // program kerja
+        Permission::create(['name' => 'program_kerja.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'program_kerja.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'program_kerja.delete', 'guard_name' => 'api']);
+        // kegiatan
+        Permission::create(['name' => 'kegiatan.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'kegiatan.edit', 'guard_name' => 'api']);
+        Permission::create(['name' => 'kegiatan.delete', 'guard_name' => 'api']);
+        // anggota
+        Permission::create(['name' => 'anggota.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'anggota.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'anggota.edit', 'guard_name' => 'api']);
 
-        Permission::create(['name' => 'permissions', 'guard_name' => 'api']);
-        Permission::create(['name' => 'roles', 'guard_name' => 'api']);
-        Permission::create(['name' => 'sliders', 'guard_name' => 'api']);
-        Permission::create(['name' => 'users', 'guard_name' => 'api']);
+        Permission::create(['name' => 'jenis_anggota', 'guard_name' => 'api']);
+
+        // struktur pengurus
+        Permission::create(['name' => 'struktur_organisasi.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'struktur_organisasi.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'struktur_organisasi.delete', 'guard_name' => 'api']);
+
+        // rekrutmen anggota
+        Permission::create(['name' => 'rekrutmen_anggota.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'rekrutmen_anggota.edit', 'guard_name' => 'api']);
+
+        // pamflet
+        Permission::create(['name' => 'pamflet.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'pamflet.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'pamflet.delete', 'guard_name' => 'api']);
+
+        // periode rekrutmen anggota
+        Permission::create(['name' => 'periode_rekrutmen_anggota.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'periode_rekrutmen_anggota.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'periode_rekrutmen_anggota.delete', 'guard_name' => 'api']);
+
+        // profil organisasi
+        Permission::create(['name' => 'profil_organisasi.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'profil_organisasi.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'profil_organisasi.edit', 'guard_name' => 'api']);
+        Permission::create(['name' => 'profil_organisasi.delete', 'guard_name' => 'api']);
+
+
+        Permission::create(['name' => 'permissions.index', 'guard_name' => 'api']);
+
+        Permission::create(['name' => 'roles.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'roles.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'roles.edit', 'guard_name' => 'api']);
+        Permission::create(['name' => 'roles.delete', 'guard_name' => 'api']);
+
+        Permission::create(['name' => 'sliders.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'sliders.edit', 'guard_name' => 'api']);
+        Permission::create(['name' => 'sliders.delete', 'guard_name' => 'api']);
+
+        Permission::create(['name' => 'users.index', 'guard_name' => 'api']);
+        Permission::create(['name' => 'users.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'users.edit', 'guard_name' => 'api']);
+        Permission::create(['name' => 'users.delete', 'guard_name' => 'api']);
     }
 }

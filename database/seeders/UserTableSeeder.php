@@ -22,17 +22,25 @@ class UserTableSeeder extends Seeder
         ]);
 
         $adminDev = User::create([
-            'nama_lengkap' => "Administrator Dev",
+            'nama_lengkap' => "Administrator Testing Account",
             'email' => 'adminkepmmi@dev.com',
             'password'  => bcrypt('password'),
         ]);
 
+        $sekumDev = User::create([
+            'nama_lengkap' => 'Sekretaris Umum Testing Account',
+            'email' => 'sekumkepmmi@dev.com',
+            'password' => bcrypt('password'),
+        ]);
+
         $role = Role::find(1);
+        $roleSekum = Role::find(2);
         $permissions = Permission::all();
 
         $role->syncPermissions($permissions);
 
         $admin->assignRole($role->name);
         $adminDev->assignRole($role->name);
+        $sekumDev->assignRole($roleSekum->name);
     }
 }

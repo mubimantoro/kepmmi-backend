@@ -17,21 +17,21 @@ class ProfilOrganisasi extends Model
     protected function logo(): Attribute
     {
         return Attribute::make(
-            get: fn($logo) => url('/storage/profil-organisasi/logo' . $logo)
+            get: fn($logo) => url('/storage/profil-organisasi/logo/' . $logo)
         );
     }
 
     protected function bukuSaku(): Attribute
     {
         return Attribute::make(
-            get: fn($bukuSaku) => url('/storage/profil-organisasi/buku-saku' . $bukuSaku)
+            get: fn($bukuSaku) => url('/storage/profil-organisasi/buku-saku/' . $bukuSaku)
         );
     }
 
     protected function pedomanIntern(): Attribute
     {
         return Attribute::make(
-            get: fn($pedomanIntern) => url('/storage/profil-organisasi/pedoman-intern', $pedomanIntern)
+            get: fn($pedomanIntern) => url('/storage/profil-organisasi/pedoman-intern/', $pedomanIntern)
         );
     }
 }

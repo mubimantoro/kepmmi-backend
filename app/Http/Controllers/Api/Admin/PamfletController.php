@@ -25,7 +25,7 @@ class PamfletController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'gambar' => 'required|image|mimes:png,jpg,jpeg|max:5120',
+            'gambar' => 'required|image|mimes:png,jpg,jpeg|max:10240',
             'caption' => 'required|string'
         ]);
 

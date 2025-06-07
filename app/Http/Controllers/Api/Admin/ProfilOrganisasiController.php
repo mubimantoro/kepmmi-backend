@@ -21,7 +21,7 @@ class ProfilOrganisasiController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'logo' => 'required|image|mimes:png,jpg,jpeg|max:5120',
+            'logo' => 'required|image|mimes:png,jpg,jpeg|max:10240',
             'buku_saku' => 'required|file|mimes:pdf|max:10240',
             'pedoman_intern' => 'required|file|mimes:pdf|max:10240',
             'ringkasan' => 'required'
@@ -68,6 +68,9 @@ class ProfilOrganisasiController extends Controller
     public function update(Request $request, ProfilOrganisasi $profilOrganisasi)
     {
         $validator = Validator::make($request->all(), [
+            'logo' => 'nullable|image|mimes:png,jpg,jpeg|max:10240',
+            'buku_saku' => 'nullable|file|mimes:pdf|max:10240',
+            'pedoman_intern' => "nullable|file|mimes:pdf|max:10240",
             'ringkasan' => 'required'
         ]);
 
