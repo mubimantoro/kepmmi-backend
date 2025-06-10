@@ -69,7 +69,8 @@ class KegiatanController extends Controller
     public function update(Request $request, Kegiatan $kegiatan)
     {
         $validator = Validator::make($request->all(), [
-            'judul' => 'required' . $kegiatan->id,
+            'gambar' => 'nullable|image|mimes:jpeg,jpg,png|max:10240',
+            'judul' => 'required|unique:kegiatans,judul,' . $kegiatan->id,
             'kategori_id' => 'required',
             'konten' => 'required'
         ]);
@@ -79,7 +80,8 @@ class KegiatanController extends Controller
         }
 
         if ($request->file('gambar')) {
-            Storage::disk('local')->delete('public/kegiatan/' . basename($kegiatan->gambar));
+
+            Storage::disk('public')->delete('kegiatan/' . $kegiatan->getRawOriginal('gambar'));
 
             $image = $request->file('gambar');
             $image->storeAs('kegiatan', $image->hashName(), 'public');
@@ -111,7 +113,7 @@ class KegiatanController extends Controller
 
     public function destroy(Kegiatan $kegiatan)
     {
-        Storage::disk('local')->delete('public/kegiatan/' . basename($kegiatan->gambar));
+        Storage::disk('public')->delete('kegiatan/' . $kegiatan->getRawOriginal('gambar'));
 
         if ($kegiatan->delete()) {
             return new KegiatanResource(true, 'Data Kegiatan berhasil dihapus!', null);

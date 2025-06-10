@@ -10,9 +10,4 @@ class Kategori extends Model
         'nama',
         'slug',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(Kegiatan::class);
-    }
 }

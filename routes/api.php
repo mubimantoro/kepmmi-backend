@@ -73,9 +73,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/categories/all', [KategoriController::class, 'all'])->middleware('permission:kategori.index');
         Route::apiResource('/categories', KategoriController::class)->middleware('permission:kategori.index|kategori.create');
         // kegiatan
-        Route::apiResource('/kegiatan', KegiatanController::class)->middleware('permission:kegiatan.index');
+        Route::apiResource('/kegiatan', KegiatanController::class)->middleware('permission:kegiatan.index|kegiatan.store|kegiatan.update|kegiatan.delete');
         // program kerja
-        Route::apiResource('/program-kerja', ProgramKerjaController::class)->middleware('permission:program_kerja.index');
+        Route::apiResource('/program-kerja', ProgramKerjaController::class)->middleware('permission:program_kerja.index|progam_kerja.store|program_kerja.update|program_kerja.delete');
         // sliders
         Route::apiResource('/sliders', SliderController::class)->middleware('permission:sliders.index|sliders.store|sliders.delete');
         // pamflet

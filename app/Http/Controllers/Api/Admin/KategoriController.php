@@ -13,13 +13,13 @@ class KategoriController extends Controller
 {
     public function index()
     {
-        $category = Kategori::when(request()->search, function ($category) {
-            $category = $category->where('nama', 'like', '%' . request()->search . '%');
+        $kategori = Kategori::when(request()->search, function ($kategori) {
+            $kategori = $kategori->where('nama', 'like', '%' . request()->search . '%');
         })->latest()->paginate(5);
 
-        $category->appends(['search' => request()->search]);
+        $kategori->appends(['search' => request()->search]);
 
-        return new KategoriResource(true, 'List data Kategori Kegiatan', $category);
+        return new KategoriResource(true, 'List data Kategori Kegiatan', $kategori);
     }
 
     public function store(Request $request)
@@ -32,21 +32,32 @@ class KategoriController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $category = Kategori::create([
+        $kategori = Kategori::create([
             'nama' => $request->nama,
             'slug' => Str::slug($request->nama, '-'),
         ]);
 
-        if ($category) {
-            return new KategoriResource(true, 'Data Kategori berhasil disimpan!', $category);
+        if ($kategori) {
+            return new KategoriResource(true, 'Data Kategori berhasil disimpan!', $kategori);
         }
 
         return new KategoriResource(false, 'Data Kategori gagal disimpan!', null);
     }
 
-    public function destroy(Kategori $category)
+    public function show($id)
     {
-        if ($category->delete()) {
+        $kategori = Kategori::whereId($id)->first();
+
+        if ($kategori) {
+            return new KategoriResource(true, 'Detail data Kategori!', $kategori);
+        }
+
+        return new KategoriResource(false, 'Detail data Kategori tidak ditemukan!', null);
+    }
+
+    public function destroy(Kategori $kategori)
+    {
+        if ($kategori->delete()) {
             return new KategoriResource(true, 'Data Kategori berhasil dihapus!', null);
         }
 
@@ -55,7 +66,7 @@ class KategoriController extends Controller
 
     public function all()
     {
-        $category = Kategori::latest()->get();
-        return new KategoriResource(true, 'List data Kategori', $category);
+        $kategori = Kategori::latest()->get();
+        return new KategoriResource(true, 'List data Kategori', $kategori);
     }
 }

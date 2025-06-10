@@ -16,6 +16,7 @@ class PermissionsTableSeeder extends Seeder
         // kategori
         Permission::create(['name' => 'kategori.index', 'guard_name' => 'api']);
         Permission::create(['name' => 'kategori.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'kategori.edit', 'guard_name' => 'api']);
         Permission::create(['name' => 'kategori.delete', 'guard_name' => 'api']);
         // bidang
         Permission::create(['name' => 'bidang.index', 'guard_name' => 'api']);
@@ -23,11 +24,13 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'bidang.delete', 'guard_name' => 'api']);
         // program kerja
         Permission::create(['name' => 'program_kerja.index', 'guard_name' => 'api']);
-        Permission::create(['name' => 'program_kerja.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'program_kerja.store', 'guard_name' => 'api']);
+        Permission::create(['name' => 'program_kerja.update', 'guard_name' => 'api']);
         Permission::create(['name' => 'program_kerja.delete', 'guard_name' => 'api']);
         // kegiatan
         Permission::create(['name' => 'kegiatan.index', 'guard_name' => 'api']);
-        Permission::create(['name' => 'kegiatan.edit', 'guard_name' => 'api']);
+        Permission::create(['name' => 'kegiatan.store', 'guard_name' => 'api']);
+        Permission::create(['name' => 'kegiatan.update', 'guard_name' => 'api']);
         Permission::create(['name' => 'kegiatan.delete', 'guard_name' => 'api']);
         // anggota
         Permission::create(['name' => 'anggota.index', 'guard_name' => 'api']);
