@@ -21,11 +21,12 @@ class PermissionsTableSeeder extends Seeder
         // bidang
         Permission::create(['name' => 'bidang.index', 'guard_name' => 'api']);
         Permission::create(['name' => 'bidang.create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'bidang.edit', 'guard_name' => 'api']);
         Permission::create(['name' => 'bidang.delete', 'guard_name' => 'api']);
         // program kerja
         Permission::create(['name' => 'program_kerja.index', 'guard_name' => 'api']);
         Permission::create(['name' => 'program_kerja.create', 'guard_name' => 'api']);
-        Permission::create(['name' => 'program_kerja.update', 'guard_name' => 'api']);
+        Permission::create(['name' => 'program_kerja.edit', 'guard_name' => 'api']);
         Permission::create(['name' => 'program_kerja.delete', 'guard_name' => 'api']);
         // kegiatan
         Permission::create(['name' => 'kegiatan.index', 'guard_name' => 'api']);

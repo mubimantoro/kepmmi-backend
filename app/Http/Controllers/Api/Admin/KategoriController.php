@@ -17,7 +17,7 @@ class KategoriController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware(['permission:kategori.index'], only: ['index']),
+            new Middleware(['permission:kategori.index'], only: ['index', 'all']),
             new Middleware(['permission:kategori.create'], only: ['store']),
             new Middleware(['permission:kategori.edit'], only: ['update']),
             new Middleware(['permission:kategori.delete'], only: ['destroy']),
@@ -71,7 +71,7 @@ class KategoriController extends Controller implements HasMiddleware
     public function update(Request $request, Kategori $kategori)
     {
         $validator = Validator::make($request->all(), [
-            'nama'     => 'required|unique:kategoris,nama,' . $kategori->id,
+            'nama' => 'required|unique:kategoris,nama,' . $kategori->id,
         ]);
 
         if ($validator->fails()) {

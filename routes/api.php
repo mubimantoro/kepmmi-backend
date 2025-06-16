@@ -67,15 +67,15 @@ Route::prefix('admin')->group(function () {
         // struktur organisasi
         Route::apiResource('/struktur-organisasi', StrukturOrganisasiController::class)->middleware('permission:struktur_organisasi.index|struktur_organisasi.create|struktur_organisasi.delete');
         // bidang
-        Route::get('/bidangs/all', [BidangController::class, 'all'])->middleware('permission:bidang.index');
-        Route::apiResource('/bidang', BidangController::class)->middleware('permission:bidang.index');
+        Route::get('/bidangs/all', [BidangController::class, 'all']);
+        Route::apiResource('/bidang', BidangController::class);
         // Kategori
         Route::get('/categories/all', [KategoriController::class, 'all']);
         Route::apiResource('/categories', KategoriController::class);
         // kegiatan
         Route::apiResource('/kegiatan', KegiatanController::class);
         // program kerja
-        Route::apiResource('/program-kerja', ProgramKerjaController::class)->middleware('permission:program_kerja.index|progam_kerja.store|program_kerja.update|program_kerja.delete');
+        Route::apiResource('/program-kerja', ProgramKerjaController::class);
         // sliders
         Route::apiResource('/sliders', SliderController::class)->middleware('permission:sliders.index|sliders.store|sliders.delete');
         // pamflet

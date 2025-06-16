@@ -6,10 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BidangResource;
 use App\Models\Bidang;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Validator;
 
-class BidangController extends Controller
+class BidangController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(['permission:bidang.index'], only: ['index', 'all']),
+            new Middleware(['permission:bidang.create'], only: ['store']),
+            new Middleware(['permission:bidang.edit'], only: ['update']),
+            new Middleware(['permission:bidang.delete'], only: ['destroy']),
+        ];
+    }
+
 
     public function index()
     {
@@ -42,6 +54,40 @@ class BidangController extends Controller
         }
 
         return new BidangResource(false, 'Data Bidang gagal disimpan!', $bidang);
+    }
+
+    public function show($id)
+    {
+        $bidang = Bidang::whereId($id)->first();
+
+        if ($bidang) {
+            return new BidangResource(true, 'Detail data Bidang!', $bidang);
+        }
+
+        return new BidangResource(false, 'Detail data Bidang tidak ditemukan!', null);
+    }
+
+    public function update(Request $request, Bidang $bidang)
+    {
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+            'tugas' => 'sometimes',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $bidang->update([
+            'nama' => $request->nama,
+            'tugas' => $request->tugas
+        ]);
+
+        if ($bidang) {
+            return new BidangResource(true, 'Data Bidang berhasil diupdate!', $bidang);
+        }
+
+        return new BidangResource(false, 'Data Bidang gagal diupdate!', null);
     }
 
     public function destroy(Bidang $bidang)

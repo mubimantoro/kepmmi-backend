@@ -6,10 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProgramKerjaResource;
 use App\Models\ProgramKerja;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Validator;
 
-class ProgramKerjaController extends Controller
+class ProgramKerjaController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(['permission:program_kerja.index'], only: ['index']),
+            new Middleware(['permission:program_kerja.create'], only: ['store']),
+            new Middleware(['permission:program_kerja.edit'], only: ['update']),
+            new Middleware(['permission:program_kerja.delete'], only: ['destroy']),
+        ];
+    }
 
     public function index()
     {
