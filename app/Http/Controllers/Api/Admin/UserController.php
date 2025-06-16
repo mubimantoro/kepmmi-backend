@@ -6,10 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(['permission:users.index'], only: ['index']),
+            new Middleware(['permission:users.create'], only: ['store']),
+            new Middleware(['permission:users.edit'], only: ['update']),
+            new Middleware(['permission:users.delete'], only: ['destroy']),
+        ];
+    }
+
     public function index()
     {
         $users = User::when(request()->search, function ($users) {

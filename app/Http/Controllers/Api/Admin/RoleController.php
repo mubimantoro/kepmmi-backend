@@ -5,11 +5,25 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 
-class RoleController extends Controller
+class RoleController extends Controller implements HasMiddleware
 {
+
+    public static function middleware()
+    {
+        return [
+            new Middleware(['permission:roles.index'], only: ['index', 'all']),
+            new Middleware(['permission:roles.create'], only: ['store']),
+            new Middleware(['permission:roles.edit'], only: ['update']),
+            new Middleware(['permission:roles.delete'], only: ['destroy']),
+        ];
+    }
+
+
     public function index()
     {
         $roles = Role::when(request()->search, function ($roles) {

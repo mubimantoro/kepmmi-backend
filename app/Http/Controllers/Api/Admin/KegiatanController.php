@@ -6,12 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\KegiatanResource;
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class KegiatanController extends Controller
+class KegiatanController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(['permission:kegiatan.index'], only: ['index']),
+            new Middleware(['permission:kegiatan.create'], only: ['store']),
+            new Middleware(['permission:kegiatan.edit'], only: ['update']),
+            new Middleware(['permission:kegiatan.delete'], only: ['destroy']),
+        ];
+    }
+
     public function index()
     {
         $kegiatans = Kegiatan::with('user', 'kategori')->when(request()->search, function ($kegiatans) {
@@ -27,7 +39,7 @@ class KegiatanController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'gambar' => 'required|image|mimes:jpeg,jpg,png|max:10240',
-            'judul' => 'required',
+            'judul' => 'required|unique:kegiatans',
             'konten' => 'required',
             'kategori_id' => 'required'
         ]);
@@ -81,7 +93,7 @@ class KegiatanController extends Controller
 
         if ($request->file('gambar')) {
 
-            Storage::disk('public')->delete('kegiatan/' . $kegiatan->getRawOriginal('gambar'));
+            Storage::disk('public')->delete('kegiatan/' . basename($kegiatan->gambar));
 
             $image = $request->file('gambar');
             $image->storeAs('kegiatan', $image->hashName(), 'public');
@@ -113,7 +125,7 @@ class KegiatanController extends Controller
 
     public function destroy(Kegiatan $kegiatan)
     {
-        Storage::disk('public')->delete('kegiatan/' . $kegiatan->getRawOriginal('gambar'));
+        Storage::disk('public')->delete('kegiatan/' . basename($kegiatan->gambar));
 
         if ($kegiatan->delete()) {
             return new KegiatanResource(true, 'Data Kegiatan berhasil dihapus!', null);

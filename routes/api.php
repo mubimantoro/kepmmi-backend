@@ -55,13 +55,13 @@ Route::prefix('admin')->group(function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/dashboard', DashboardController::class);
         // permissions
-        Route::get('/permissions', [PermissionController::class, 'index'])->middleware('permission:permissions.index');
-        Route::get('/permissions/all', [PermissionController::class, 'all'])->middleware('permission:permissions.index');
+        Route::get('/permissions', [PermissionController::class, 'index']);
+        Route::get('/permissions/all', [PermissionController::class, 'all']);
         // roles
-        Route::get('/roles/all', [RoleController::class, 'all'])->middleware('permission:roles.index');
-        Route::apiResource('/roles', RoleController::class)->middleware('permission:roles.index');
+        Route::get('/roles/all', [RoleController::class, 'all']);
+        Route::apiResource('/roles', RoleController::class);
         // users
-        Route::apiResource('/users', UserController::class)->middleware('permission:users.index');
+        Route::apiResource('/users', UserController::class);
         // profil organisasi
         Route::apiResource('/profil-organisasi', ProfilOrganisasiController::class)->middleware('permission:profil_organisasi.index|profil_organisasi.create|profil_organisasi.show|profil_organisasi.delete');
         // struktur organisasi
@@ -69,11 +69,11 @@ Route::prefix('admin')->group(function () {
         // bidang
         Route::get('/bidangs/all', [BidangController::class, 'all'])->middleware('permission:bidang.index');
         Route::apiResource('/bidang', BidangController::class)->middleware('permission:bidang.index');
-        // Category
-        Route::get('/categories/all', [KategoriController::class, 'all'])->middleware('permission:kategori.index');
-        Route::apiResource('/categories', KategoriController::class)->middleware('permission:kategori.index|kategori.create');
+        // Kategori
+        Route::get('/categories/all', [KategoriController::class, 'all']);
+        Route::apiResource('/categories', KategoriController::class);
         // kegiatan
-        Route::apiResource('/kegiatan', KegiatanController::class)->middleware('permission:kegiatan.index|kegiatan.store|kegiatan.update|kegiatan.delete');
+        Route::apiResource('/kegiatan', KegiatanController::class);
         // program kerja
         Route::apiResource('/program-kerja', ProgramKerjaController::class)->middleware('permission:program_kerja.index|progam_kerja.store|program_kerja.update|program_kerja.delete');
         // sliders
