@@ -45,7 +45,7 @@ class StrukturOrganisasiController extends Controller
     public function destroy(StrukturOrganisasi $strukturOrganisasi)
     {
 
-        Storage::disk('local')->delete('public/struktur-organisasi/' . basename($strukturOrganisasi->gambar));
+        Storage::disk('public')->delete('struktur-organisasi/' . basename($strukturOrganisasi->gambar));
 
         if ($strukturOrganisasi->delete()) {
             return new StrukturOrganisasiResource(true, 'Data Struktur Pengurus Organisasi berhasil dihapus!', null);

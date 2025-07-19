@@ -28,7 +28,6 @@ Route::post('/register', [RegisterController::class, 'index']);
 
 Route::prefix('public')->group(function () {
     Route::get('/categories', [App\Http\Controllers\Api\Public\CategoryController::class, 'index']);
-    Route::get('/pengurus', [App\Http\Controllers\Api\Admin\PengurusController::class, 'index']);
     // kegiatan
     Route::get('/kegiatan', [App\Http\Controllers\Api\Public\KegiatanController::class, 'index']);
     Route::get('/kegiatan/{slug}', [App\Http\Controllers\Api\Public\KegiatanController::class, 'show']);
@@ -39,6 +38,7 @@ Route::prefix('public')->group(function () {
     Route::get('/pamflet', [App\Http\Controllers\Api\Public\PamfletController::class, 'index']);
     Route::get('/program-kerja', [App\Http\Controllers\Api\Public\ProgramKerjaController::class, 'index']);
     Route::get('/profil-organisasi', [App\Http\Controllers\Api\Public\ProfilOrganisasiController::class, 'index']);
+    Route::get('/struktur-organisasi', [App\Http\Controllers\Api\Public\StrukturOrganisasiController::class, 'index']);
 });
 
 Route::group(['middleware' => 'auth:api'], function () {
@@ -85,8 +85,6 @@ Route::prefix('admin')->group(function () {
         // periode rekrutmen
         Route::get('/periode-rekrutmen/all', [PeriodeRekrutmenAnggotaController::class, 'all'])->middleware('permission:periode_rekrutmen_anggota.index');
         Route::apiResource('/periode-rekrutmen', PeriodeRekrutmenAnggotaController::class)->middleware('permission:periode_rekrutmen_anggota.index|periode_rekrutmen_anggota.store|periode_rekrutmen_anggota.delete');
-        // pengurus
-        Route::apiResource('/pengurus', PengurusController::class)->middleware('permission:pengurus');
         // jenis anggota
         Route::get('/jenis-anggota/all', [JenisAnggotaController::class, 'all'])->middleware('permission:jenis_anggota');
         // anggota
