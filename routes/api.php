@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\Admin\JenisAnggotaController;
 use App\Http\Controllers\Api\Admin\KategoriController;
 use App\Http\Controllers\Api\Admin\KegiatanController;
 use App\Http\Controllers\Api\Admin\PamfletController;
-use App\Http\Controllers\Api\Admin\PengurusController;
 use App\Http\Controllers\Api\Admin\PeriodeRekrutmenAnggotaController;
 use App\Http\Controllers\Api\Admin\PermissionController;
 use App\Http\Controllers\Api\Admin\ProfilOrganisasiController;
@@ -35,10 +34,14 @@ Route::prefix('public')->group(function () {
     Route::post('/kegiatan/store-image', [App\Http\Controllers\Api\Public\KegiatanController::class, 'storeImageKegiatan']);
 
     Route::get('/sliders', [App\Http\Controllers\Api\Public\SliderController::class, 'index']);
+    // pamflet
     Route::get('/pamflet', [App\Http\Controllers\Api\Public\PamfletController::class, 'index']);
-    Route::get('/program-kerja', [App\Http\Controllers\Api\Public\ProgramKerjaController::class, 'index']);
+    Route::get('/pamflet/{id}', [App\Http\Controllers\Api\Public\PamfletController::class, 'show']);
+    Route::get('/pamflet-home', [App\Http\Controllers\Api\Public\PamfletController::class, 'homePage']);
     Route::get('/profil-organisasi', [App\Http\Controllers\Api\Public\ProfilOrganisasiController::class, 'index']);
     Route::get('/struktur-organisasi', [App\Http\Controllers\Api\Public\StrukturOrganisasiController::class, 'index']);
+    Route::get('/program-kerja', [App\Http\Controllers\Api\Public\ProgramKerjaController::class, 'index']);
+    Route::get('/bidang', [App\Http\Controllers\Api\Public\ProgramKerjaController::class, 'getBidang']);
 });
 
 Route::group(['middleware' => 'auth:api'], function () {
@@ -69,8 +72,8 @@ Route::prefix('admin')->group(function () {
         // struktur organisasi
         Route::apiResource('/struktur-organisasi', StrukturOrganisasiController::class)->middleware('permission:struktur_organisasi.index|struktur_organisasi.create|struktur_organisasi.delete');
         // bidang
-        Route::get('/bidangs/all', [BidangController::class, 'all']);
         Route::apiResource('/bidang', BidangController::class);
+        Route::get('/bidangs/all', [BidangController::class, 'all']);
         // Kategori
         Route::get('/categories/all', [KategoriController::class, 'all']);
         Route::apiResource('/categories', KategoriController::class);

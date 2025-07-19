@@ -37,7 +37,6 @@ class BidangController extends Controller implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'tugas' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -46,7 +45,6 @@ class BidangController extends Controller implements HasMiddleware
 
         $bidang = Bidang::create([
             'nama' => $request->nama,
-            'tugas' => $request->tugas
         ]);
 
         if ($bidang) {
@@ -71,7 +69,6 @@ class BidangController extends Controller implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'tugas' => 'sometimes',
         ]);
 
         if ($validator->fails()) {
@@ -80,7 +77,6 @@ class BidangController extends Controller implements HasMiddleware
 
         $bidang->update([
             'nama' => $request->nama,
-            'tugas' => $request->tugas
         ]);
 
         if ($bidang) {

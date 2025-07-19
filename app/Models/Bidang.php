@@ -9,7 +9,6 @@ class Bidang extends Model
     //
     protected $fillable = [
         'nama',
-        'tugas',
     ];
 
     public function programKerjas()
