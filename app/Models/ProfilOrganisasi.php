@@ -31,7 +31,7 @@ class ProfilOrganisasi extends Model
     protected function pedomanIntern(): Attribute
     {
         return Attribute::make(
-            get: fn($pedomanIntern) => url('/storage/profil-organisasi/pedoman-intern/', $pedomanIntern)
+            get: fn($pedomanIntern) => url('/storage/profil-organisasi/pedoman-intern/' . $pedomanIntern)
         );
     }
 }

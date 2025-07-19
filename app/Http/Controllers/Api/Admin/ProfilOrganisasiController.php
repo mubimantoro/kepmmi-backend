@@ -6,11 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProfilOrganisasiResource;
 use App\Models\ProfilOrganisasi;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class ProfilOrganisasiController extends Controller
+class ProfilOrganisasiController extends Controller implements HasMiddleware
 {
+
+    public static function middleware()
+    {
+        return [
+            new Middleware(['permission:profil_organisasi.index'], only: ['index']),
+            new Middleware(['permission:profil_organisasi.create'], only: ['store']),
+            new Middleware(['permission:profil_organisasi.edit'], only: ['update']),
+            new Middleware(['permission:profil_organisasi.delete'], only: ['destroy']),
+        ];
+    }
+
     public function index()
     {
         $profilOrganisasi = ProfilOrganisasi::latest()->paginate(5);
@@ -79,7 +92,7 @@ class ProfilOrganisasiController extends Controller
         }
 
         if ($request->file('logo')) {
-            Storage::disk('local')->delete('public/profil-organisasi/logo/' . basename($profilOrganisasi->logo));
+            Storage::disk('public')->delete('profil-organisasi/logo/' . basename($profilOrganisasi->logo));
 
             $logo = $request->file('logo');
             $logo->storeAs('profil-organisasi/logo', $logo->hashName(), 'public');
@@ -91,7 +104,7 @@ class ProfilOrganisasiController extends Controller
         }
 
         if ($request->file('buku_saku')) {
-            Storage::disk('local')->delete('public/profil-organisasi/buku-saku/' . basename($profilOrganisasi->buku_saku));
+            Storage::disk('public')->delete('profil-organisasi/buku-saku/' . basename($profilOrganisasi->buku_saku));
 
             $bukuSaku = $request->file('buku_saku');
             $bukuSaku->storeAs('profil-organisasi/buku-saku', $bukuSaku->hashName(), 'public');
@@ -103,7 +116,7 @@ class ProfilOrganisasiController extends Controller
         }
 
         if ($request->file('pedoman_intern')) {
-            Storage::disk('local')->delete('public/profil-organisasi/pedoman-intern/' . basename($profilOrganisasi->pedoman_intern));
+            Storage::disk('public')->delete('profil-organisasi/pedoman-intern/' . basename($profilOrganisasi->pedoman_intern));
 
             $pedomanIntern = $request->file('pedoman_intern');
             $pedomanIntern->storeAs('profil-organisasi/pedoman-intern', $pedomanIntern->hashName(), 'public');
@@ -129,9 +142,9 @@ class ProfilOrganisasiController extends Controller
     public function destroy(ProfilOrganisasi $profilOrganisasi)
     {
 
-        Storage::disk('local')->delete('public/profil-organisasi/logo', basename($profilOrganisasi->logo));
-        Storage::disk('local')->delete('public/profil-organisasi/buku-saku', basename($profilOrganisasi->buku_saku));
-        Storage::disk('local')->delete('public/profil-organisasi/pedoman-intern', basename($profilOrganisasi->pedoman_intern));
+        Storage::disk('public')->delete('profil-organisasi/logo', basename($profilOrganisasi->logo));
+        Storage::disk('public')->delete('profil-organisasi/buku-saku', basename($profilOrganisasi->buku_saku));
+        Storage::disk('public')->delete('profil-organisasi/pedoman-intern', basename($profilOrganisasi->pedoman_intern));
 
         if ($profilOrganisasi->delete()) {
             return new ProfilOrganisasiResource(true, 'Data Profil Organisasi berhasil dihapus!', null);

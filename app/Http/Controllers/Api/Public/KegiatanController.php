@@ -11,10 +11,24 @@ class KegiatanController extends Controller
 {
     public function index()
     {
-        $kegiatans = Kegiatan::with('user', 'kategori')->latest()->paginate(10);
+        $kegiatan = Kegiatan::with('user', 'kategori')->latest()->paginate(10);
 
-        return new KegiatanResource(true, 'List data Kegiatan', $kegiatans);
+        return new KegiatanResource(true, 'List data Kegiatan', $kegiatan);
     }
+
+    public function show($slug)
+    {
+        $kegiatan = Kegiatan::with('user', 'kategori')->where('slug', $slug)->first();
+
+        if ($kegiatan) {
+            //return with Api Resource
+            return new KegiatanResource(true, 'Detail data Kegiatan', $kegiatan);
+        }
+
+        //return with Api Resource
+        return new KegiatanResource(false, 'Detail data Kegiatan tidak ditemukan!', null);
+    }
+
 
     public function homePage()
     {

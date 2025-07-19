@@ -29,10 +29,12 @@ Route::post('/register', [RegisterController::class, 'index']);
 Route::prefix('public')->group(function () {
     Route::get('/categories', [App\Http\Controllers\Api\Public\CategoryController::class, 'index']);
     Route::get('/pengurus', [App\Http\Controllers\Api\Admin\PengurusController::class, 'index']);
+    // kegiatan
     Route::get('/kegiatan', [App\Http\Controllers\Api\Public\KegiatanController::class, 'index']);
     Route::get('/kegiatan/{slug}', [App\Http\Controllers\Api\Public\KegiatanController::class, 'show']);
     Route::get('/kegiatan-home', [App\Http\Controllers\Api\Public\KegiatanController::class, 'homePage']);
     Route::post('/kegiatan/store-image', [App\Http\Controllers\Api\Public\KegiatanController::class, 'storeImageKegiatan']);
+
     Route::get('/sliders', [App\Http\Controllers\Api\Public\SliderController::class, 'index']);
     Route::get('/pamflet', [App\Http\Controllers\Api\Public\PamfletController::class, 'index']);
     Route::get('/program-kerja', [App\Http\Controllers\Api\Public\ProgramKerjaController::class, 'index']);
@@ -63,7 +65,7 @@ Route::prefix('admin')->group(function () {
         // users
         Route::apiResource('/users', UserController::class);
         // profil organisasi
-        Route::apiResource('/profil-organisasi', ProfilOrganisasiController::class)->middleware('permission:profil_organisasi.index|profil_organisasi.create|profil_organisasi.show|profil_organisasi.delete');
+        Route::apiResource('/profil-organisasi', ProfilOrganisasiController::class);
         // struktur organisasi
         Route::apiResource('/struktur-organisasi', StrukturOrganisasiController::class)->middleware('permission:struktur_organisasi.index|struktur_organisasi.create|struktur_organisasi.delete');
         // bidang
@@ -77,7 +79,7 @@ Route::prefix('admin')->group(function () {
         // program kerja
         Route::apiResource('/program-kerja', ProgramKerjaController::class);
         // sliders
-        Route::apiResource('/sliders', SliderController::class)->middleware('permission:sliders.index|sliders.store|sliders.delete');
+        Route::apiResource('/sliders', SliderController::class);
         // pamflet
         Route::apiResource('/pamflet', PamfletController::class)->middleware('permission:pamflet.index|pamflet.store|pamflet.delete');
         // periode rekrutmen

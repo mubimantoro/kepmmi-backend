@@ -6,11 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SliderResource;
 use App\Models\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class SliderController extends Controller
+class SliderController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(['permission:sliders.index'], only: ['index']),
+            new Middleware(['permission:sliders.create'], only: ['store']),
+            new Middleware(['permission:sliders.delete'], only: ['destroy']),
+        ];
+    }
+
     public function index()
     {
         $sliders = Slider::latest()->paginate(5);
@@ -21,7 +33,7 @@ class SliderController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'gambar' => 'required|image|mimes:png,jpg,jpeg|max:5120'
+            'gambar' => 'required|image|mimes:png,jpg,jpeg|max:10240'
         ]);
 
         if ($validator->fails()) {
@@ -44,7 +56,7 @@ class SliderController extends Controller
 
     public function destroy(Slider $slider)
     {
-        Storage::disk('local')->delete('public/sliders' . basename($slider->gambar));
+        Storage::disk('public')->delete('sliders/' . basename($slider->gambar));
 
         if ($slider->delete()) {
             return new SliderResource(true, 'Data Slider berhasil dihapus!', null);

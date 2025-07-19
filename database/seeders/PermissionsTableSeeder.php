@@ -68,7 +68,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'roles.delete', 'guard_name' => 'api']);
         // sliders
         Permission::create(['name' => 'sliders.index', 'guard_name' => 'api']);
-        Permission::create(['name' => 'sliders.edit', 'guard_name' => 'api']);
+        Permission::create(['name' => 'sliders.create', 'guard_name' => 'api']);
         Permission::create(['name' => 'sliders.delete', 'guard_name' => 'api']);
         // users
         Permission::create(['name' => 'users.index', 'guard_name' => 'api']);
