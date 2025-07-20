@@ -21,4 +21,4 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-kepmmi-restapi.pem
+kepmmi-server.pem
