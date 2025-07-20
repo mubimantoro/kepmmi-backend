@@ -37,8 +37,8 @@ class UserController extends Controller implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'nama_lengkap' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|'
+            'email' => 'required|email|unique:users',
+            'password' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -75,36 +75,36 @@ class UserController extends Controller implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'nama_lengkap' => 'required',
-            'email' => 'required|unique:users,email' . $user->id,
-            'password' => 'confirmed'
+            'email' => 'required|unique:users,email,' . $user->id,
+            'password' => 'nullable'
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
-
-            if ($request->password == "") {
-
-                $user->update([
-                    'nama_lengkap' => $request->nama_lengkap,
-                    'email' => $request->email
-                ]);
-            } else {
-                $user->update([
-                    'nama_lengkap' => $request->nama_lengkap,
-                    'email' => $request->email,
-                    'password' => bcrypt($request->password)
-                ]);
-            }
-
-            $user->syncRoles($request->roles);
-
-            if ($user) {
-                return new UserResource(true, 'Data User berhasil diperbarui', $user);
-            }
-
-            return new UserResource(false, 'Data User gagal diperbarui', null);
         }
+
+        if ($request->password == "") {
+            $user->update([
+                'nama_lengkap' => $request->nama_lengkap,
+                'email' => $request->email
+            ]);
+        } else {
+            $user->update([
+                'nama_lengkap' => $request->nama_lengkap,
+                'email' => $request->email,
+                'password' => bcrypt($request->password)
+            ]);
+        }
+
+        $user->syncRoles($request->roles);
+
+        if ($user) {
+            return new UserResource(true, 'Data User berhasil diperbarui!', $user);
+        }
+
+        return new UserResource(false, 'Data User gagal diperbarui!', null);
     }
+
 
     public function destroy(User $user)
     {
