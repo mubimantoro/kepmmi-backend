@@ -8,10 +8,20 @@ use App\Http\Resources\UserResource;
 use App\Models\RekrutmenAnggota;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Validator;
 
-class RekrutmenAnggotaController extends Controller
+class RekrutmenAnggotaController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(['permission:rekrutmen_anggota.index'], only: ['index']),
+            new Middleware(['permission:rekrutmen_anggota.show'], only: ['show']),
+            new Middleware(['permission:rekrutmen_anggota.review'], only: ['updateStatusRekrutmen']),
+        ];
+    }
 
     public function index()
     {
