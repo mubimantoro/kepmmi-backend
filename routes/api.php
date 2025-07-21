@@ -51,8 +51,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/profile/update', [App\Http\Controllers\Api\Public\UserProfileController::class, 'update']);
 
     Route::post('/rekrutmen-anggota/daftar', [App\Http\Controllers\Api\Public\PendaftaranAnggotaController::class, 'store']);
+
+    Route::get('/riwayat-pendaftaran', [App\Http\Controllers\Api\Public\PendaftaranAnggotaController::class, 'riwayatPendaftaran']);
+    Route::get('/detail-pendaftaran/{id}', [App\Http\Controllers\Api\Public\PendaftaranAnggotaController::class, 'detailPendaftaran']);
+    Route::put('/batalkan-pendaftaran/{id}', [App\Http\Controllers\Api\Public\PendaftaranAnggotaController::class, 'batalkanPendaftaran']);
+
     Route::get('/periode-rekrutmen/active', [App\Http\Controllers\Api\Public\PeriodeRekrutmenAnggotaController::class, 'index']);
-    Route::get('/rekrutmen-anggota/riwayat', [App\Http\Controllers\Api\Public\RiwayatPendaftaranAnggotaController::class]);
     Route::get('/anggota', AnggotaContoller::class);
 });
 
@@ -93,8 +97,8 @@ Route::prefix('admin')->group(function () {
         // anggota
         Route::apiResource('/anggota', AnggotaController::class)->middleware('permission:anggota.index|anggota.store|anggota.show');
         // rekrutmen anggota
-        Route::get('/rekrutmen-anggota', [RekrutmenAnggotaController::class, 'index'])->middleware('permission:rekrutmen_anggota.index');
-        Route::get('/rekrutmen-anggota/{id}', [RekrutmenAnggotaController::class, 'show'])->middleware('permission:rekrutmen_anggota.show');
-        Route::put('/rekrutmen-anggota/{id}/status', [RekrutmenAnggotaController::class, 'updateStatusRekrutmen'])->middleware('permission:rekrutmen_anggota.update');
+        Route::get('/rekrutmen-anggota', [RekrutmenAnggotaController::class, 'index']);
+        Route::get('/rekrutmen-anggota/{id}', [RekrutmenAnggotaController::class, 'show']);
+        Route::put('/rekrutmen-anggota/{id}/status', [RekrutmenAnggotaController::class, 'updateStatusRekrutmen']);
     });
 });

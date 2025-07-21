@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RekrutmenAnggotaResource;
-use App\Http\Resources\UserResource;
 use App\Models\RekrutmenAnggota;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -17,8 +15,7 @@ class RekrutmenAnggotaController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware(['permission:rekrutmen_anggota.index'], only: ['index']),
-            new Middleware(['permission:rekrutmen_anggota.show'], only: ['show']),
+            new Middleware(['permission:rekrutmen_anggota.index'], only: ['index', 'show']),
             new Middleware(['permission:rekrutmen_anggota.review'], only: ['updateStatusRekrutmen']),
         ];
     }
