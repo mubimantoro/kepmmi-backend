@@ -95,10 +95,10 @@ Route::prefix('admin')->group(function () {
         // jenis anggota
         Route::get('/jenis-anggota/all', [JenisAnggotaController::class, 'all'])->middleware('permission:jenis_anggota');
         // anggota
-        Route::apiResource('/anggota', AnggotaController::class)->middleware('permission:anggota.index|anggota.store|anggota.show');
+        Route::apiResource('/anggota', AnggotaController::class);
         // rekrutmen anggota
         Route::get('/rekrutmen-anggota', [RekrutmenAnggotaController::class, 'index']);
         Route::get('/rekrutmen-anggota/{id}', [RekrutmenAnggotaController::class, 'show']);
-        Route::put('/rekrutmen-anggota/{id}/status', [RekrutmenAnggotaController::class, 'updateStatusRekrutmen']);
+        Route::put('/rekrutmen-anggota/{id}/status', [RekrutmenAnggotaController::class, 'update']);
     });
 });

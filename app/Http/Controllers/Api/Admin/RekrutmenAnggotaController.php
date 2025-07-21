@@ -16,7 +16,7 @@ class RekrutmenAnggotaController extends Controller implements HasMiddleware
     {
         return [
             new Middleware(['permission:rekrutmen_anggota.index'], only: ['index', 'show']),
-            new Middleware(['permission:rekrutmen_anggota.review'], only: ['updateStatusRekrutmen']),
+            new Middleware(['permission:rekrutmen_anggota.update_status_rekrutmen'], only: ['updateStatusRekrutmen']),
         ];
     }
 
@@ -53,7 +53,7 @@ class RekrutmenAnggotaController extends Controller implements HasMiddleware
         return new RekrutmenAnggotaResource(true, 'Detail Pendaftaran Anggota!', $pendaftaran);
     }
 
-    public function updateStatusRekrutmen(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'status' => 'required'

@@ -8,10 +8,21 @@ use App\Models\Anggota;
 use App\Models\RekrutmenAnggota;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Validator;
 
-class AnggotaController extends Controller
+class AnggotaController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(['permission:anggota.index'], only: ['index', 'show']),
+            new Middleware(['permission:anggota.update_status_anggota'], only: ['store']),
+            new Middleware(['permission:anggota.delete'], only: ['destroy']),
+        ];
+    }
+
     public function index()
     {
         $anggota = User::with([
