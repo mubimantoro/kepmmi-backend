@@ -26,7 +26,7 @@ class KegiatanController extends Controller implements HasMiddleware
 
     public function index()
     {
-        $kegiatans = Kegiatan::with('user', 'kategori')->when(request()->search, function ($kegiatans) {
+        $kegiatans = Kegiatan::with('user', 'kategori')->withCount('views')->when(request()->search, function ($kegiatans) {
             $kegiatans = $kegiatans->where('judul', 'like', '%' . request()->search . '%');
         })->where('user_id', auth()->user()->id)->latest()->paginate(5);
 

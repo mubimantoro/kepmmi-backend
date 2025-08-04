@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('jurusan')->nullable();
             $table->string('angkatan_akademik')->nullable();
             $table->string('asal_daerah')->nullable();
+            $table->string('no_hp')->max(15)->nullable();
+            $table->string('no_hp_wali')->max(15)->nullable();
             $table->timestamps();
         });
     }
