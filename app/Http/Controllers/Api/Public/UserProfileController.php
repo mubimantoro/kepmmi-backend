@@ -32,7 +32,8 @@ class UserProfileController extends Controller
             'jurusan' => 'required|string',
             'angkatan_akademik' => 'required|string',
             'asal_daerah' => 'required|string',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:5120'
+            'no_hp' => 'nullable',
+            'no_hp_wali' => 'nullable'
         ]);
 
         if ($validator->fails()) {
@@ -66,7 +67,9 @@ class UserProfileController extends Controller
                 'asal_kampus' => $request->asal_kampus,
                 'jurusan' => $request->jurusan,
                 'angkatan_akademik' => $request->angkatan_akademik,
-                'asal_daerah' => $request->asal_daerah
+                'asal_daerah' => $request->asal_daerah,
+                'no_hp' => $request->no_hp,
+                'no_hp_wali' => $request->no_hp_wali,
             ]
         );
 

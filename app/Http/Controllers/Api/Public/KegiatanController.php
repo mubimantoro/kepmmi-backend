@@ -20,12 +20,14 @@ class KegiatanController extends Controller
     {
         $kegiatan = Kegiatan::with('user', 'kategori')->withCount('views')->where('slug', $slug)->first();
 
+        $kegiatan->views()->create([
+            'views' => 1
+        ]);
+
         if ($kegiatan) {
-            //return with Api Resource
             return new KegiatanResource(true, 'Detail data Kegiatan', $kegiatan);
         }
 
-        //return with Api Resource
         return new KegiatanResource(false, 'Detail data Kegiatan tidak ditemukan!', null);
     }
 

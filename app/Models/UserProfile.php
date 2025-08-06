@@ -14,7 +14,9 @@ class UserProfile extends Model
         'asal_kampus',
         'jurusan',
         'angkatan_akademik',
-        'asal_daerah'
+        'asal_daerah',
+        'no_hp',
+        'no_hp_wali'
     ];
 
     public function user()
