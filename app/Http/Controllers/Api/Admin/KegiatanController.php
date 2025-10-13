@@ -60,6 +60,17 @@ class KegiatanController extends Controller implements HasMiddleware
             'konten' => $request->konten
         ]);
 
+        fcm()
+            ->toTopic('push-notifications')
+            ->priority('normal')
+            ->timeToLive(0)
+            ->notification([
+                'title' => 'Kegiatan Baru',
+                'body' => 'Klik disini untuk melihat selengkapnya',
+                'click_action' => 'OPEN_ACTIVITY'
+            ])
+            ->send();
+
         if ($kegiatan) {
             return new KegiatanResource(true, 'Data Kegiatan berhasil disimpan!', $kegiatan);
         }

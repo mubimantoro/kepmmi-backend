@@ -69,6 +69,7 @@ class UserProfileController extends Controller
                 'angkatan_akademik' => $request->angkatan_akademik,
                 'asal_daerah' => $request->asal_daerah,
                 'no_hp' => $request->no_hp,
+                'nama_wali' => $request->nama_wali,
                 'no_hp_wali' => $request->no_hp_wali,
             ]
         );

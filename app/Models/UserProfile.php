@@ -16,6 +16,7 @@ class UserProfile extends Model
         'angkatan_akademik',
         'asal_daerah',
         'no_hp',
+        'nama_wali',
         'no_hp_wali'
     ];
 
